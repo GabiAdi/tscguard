@@ -99,6 +99,8 @@ class MySQLDB
 		$user = $result;
 		error_log("User" . $user);
 		if(password_verify($password, $user["password"])) {
+			$_SESSION["user_id"] = $user["id"];
+			$_SESSION["username"] = $user["username"];
 			return true;
 		}
 		error_log("Hash" . $user["password"]);

@@ -1,6 +1,13 @@
+<?php
+if(isset($_SESSION["user_id"])) {
+	header("Location: /dashboard.php");
+}
+?>
+
 <html>
 	<body>
-		<form action="login_user.php" method="post">
+		<h1>Register</h1>
+		<form action="create_user.php" method="post">
 			<label for="username">Username</label>
 			<input name="username" type="text" id="username" required><br>
 
@@ -9,5 +16,12 @@
 
 			<input type="submit" value="Submit">
 		</form>
+		<?php
+		if($_GET["failed"] == "true") {
+		?>
+		<p>User already exists</p>
+		<?php
+		}
+		?>
 	</body>
 </html>

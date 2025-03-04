@@ -1,6 +1,13 @@
+<?php
+if(isset($_SESSION["user_id"])) {
+	header("Location: /dashboard.php");
+}
+?>
+
 <html>
 	<body>
-		<form action="create_user.php" method="post">
+		<h1>Login</h1>
+		<form action="login_user.php" method="post">
 			<label for="username">Username</label>
 			<input name="username" type="text" id="username" required><br>
 
