@@ -101,10 +101,25 @@ class MySQLDB
 		if(password_verify($password, $user["password"])) {
 			$_SESSION["user_id"] = $user["id"];
 			$_SESSION["username"] = $user["username"];
+			$_SESSION["admin"] = $user["admin"];
 			return true;
 		}
 		error_log("Hash" . $user["password"]);
 		return false;
+	}
+
+	function add_admin($username) {
+		$query = "SELECT id FROM users WHERE username = ?";
+		$params = array($username);
+
+		$result = $this->query($query, $params);
+
+		if(!($result && count($result) > 0)) {
+			return false;
+		}
+		return true;
+
+		$id = $result["id"];
 	}
 }
 
