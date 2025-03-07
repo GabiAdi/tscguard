@@ -104,7 +104,6 @@ class MySQLDB
 			$_SESSION["admin"] = $user["admin"];
 			return true;
 		}
-		error_log("Hash" . $user["password"]);
 		return false;
 	}
 
@@ -117,9 +116,15 @@ class MySQLDB
 		if(!($result && count($result) > 0)) {
 			return false;
 		}
-		return true;
 
-		$id = $result["id"];
+		$query = "UPDATE users SET admin=1 WHERE id = ?";
+		$params = array($result["id"]);
+
+		if($this->query($query, $params) == 1) {
+			return true;
+		}
+		return false;
+		
 	}
 }
 
