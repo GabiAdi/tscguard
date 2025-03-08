@@ -8,11 +8,11 @@ if(isset($_SESSION["user_id"])) {
 	<body>
 		<h1>Login</h1>
 		<form action="login_user.php" method="post">
-			<label for="username">Username</label>
-			<input name="username" type="text" id="username" required><br>
+			<label for="email">Email</label>
+			<input name="email" type="text" id="email" required><br>
 
 			<label for="password">Password</label>
-			<input name="password" type="text" id="password" required><br>
+			<input name="password" type="password" id="password" required><br>
 
 			<input type="submit" value="Submit">
 		</form>

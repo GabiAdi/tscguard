@@ -65,31 +65,38 @@ class MySQLDB
 		return false;
 	}
 
-	function create_user($username, $hash): bool {
-		$query = "SELECT id FROM users WHERE username = ?";
-		$params = array($username);
+	function create_user($email, $username, $hash): bool {
+		$query = "SELECT ID FROM tg_korisnik WHERE email = ?";
+		$params = array($email);
 
 		if($this->query($query, $params)) {
-			echo "User already exists";
+			error_log("User already exists");
 			return false;
 		}
 		
-		$query = "INSERT INTO users (username, password) VALUES (?,?)";	
-		$params = array($username, $hash); 
-		
-		
+		$query = "INSERT INTO tg_korisnik (email, kime, lozinka) VALUES (?,?,?)";	
+		$params = array($email, $username, $hash); 		
 
 		if(!$this->query($query, $params)) {
-			echo "Failed to create user";
+			error_log("Failed to create user");
 			return false;
 		}
+
+		$query = "SELECT ID FROM tg_pravo WHERE opis = ?";
+		$params = array("user");
+
+		$pravoId = $this->query($query, $params);
+
+		error_log($pravoId);
+		
+
 		return true;
 	}
 
-	function validate_user($username, $password): bool 
+	function validate_user($email, $password): bool 
 	{
-		$query = "SELECT * FROM users WHERE username = ?";
-		$params = array($username);
+		$query = "SELECT * FROM tg_korisnik WHERE email = ?";
+		$params = array($email);
 
 		$result = $this->query($query, $params);
 
@@ -98,27 +105,29 @@ class MySQLDB
 		}
 		$user = $result;
 		error_log("User" . $user);
-		if(password_verify($password, $user["password"])) {
-			$_SESSION["user_id"] = $user["id"];
-			$_SESSION["username"] = $user["username"];
-			$_SESSION["admin"] = $user["admin"];
+		if(password_verify($password, $user["lozinka"])) {
+			$_SESSION["user_id"] = $user["ID"];
+			$_SESSION["username"] = $user["kime"];
+			//$_SESSION["admin"] = $user["razinaID"];
 			return true;
 		}
 		return false;
 	}
 
 	function add_admin($username) {
-		$query = "SELECT id FROM users WHERE username = ?";
+		$query = "SELECT ID FROM tg_korisnik WHERE kime = ?";
 		$params = array($username);
 
 		$result = $this->query($query, $params);
+
+		return false; // Temporary
 
 		if(!($result && count($result) > 0)) {
 			return false;
 		}
 
-		$query = "UPDATE users SET admin=1 WHERE id = ?";
-		$params = array($result["id"]);
+		$query = "UPDATE tg_prava SET pravoID=1 WHERE korisnikID = ?";
+		$params = array($result["ID"]);
 
 		if($this->query($query, $params) == 1) {
 			return true;

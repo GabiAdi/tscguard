@@ -9,14 +9,14 @@ if(isset($_SESSION["user_id"])) {
 }
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
-	$username = trim($_POST["username"]);
+	$email = trim($_POST["email"]);
 	$password = trim($_POST["password"]);
 
-	if (empty($username) || empty($password)) {
-        die("Username and password are required.");
+	if (empty($email) || empty($password)) {
+        die("Email and password are required.");
     }
 	
-	if($db->validate_user($username, $password)) {
+	if($db->validate_user($email, $password)) {
 		echo "Hello " . $_SESSION["username"] . " with id " . $_SESSION["user_id"];	
 		header("Location: /index.php");
 	} else {
