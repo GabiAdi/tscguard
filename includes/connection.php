@@ -66,8 +66,8 @@ class MySQLDB
 	}
 
 	function create_user($email, $username, $hash): bool {
-		$query = "SELECT ID FROM tg_korisnik WHERE email = ?";
-		$params = array($email);
+		$query = "SELECT ID FROM tg_korisnik WHERE email = ? OR kime = ?";
+		$params = array($email, $username);
 
 		if($this->query($query, $params)) {
 			error_log("User already exists");
@@ -81,22 +81,16 @@ class MySQLDB
 			error_log("Failed to create user");
 			return false;
 		}
-
-		$query = "SELECT ID FROM tg_pravo WHERE opis = ?";
-		$params = array("user");
-
-		$pravoId = $this->query($query, $params);
-
-		error_log($pravoId);
-		
-
+		$query = "INSERT INTO tg_prava (korisnikID, pravoID) SELECT tg_korisnik.ID, tg_pravo.ID FROM tg_korisnik JOIN tg_pravo ON tg_pravo.opis = ? WHERE tg_korisnik.kime = ?;"; 
+		$params = array("user", $username);	
+		$this->query($query, $params);
 		return true;
 	}
 
 	function validate_user($email, $password): bool 
 	{
-		$query = "SELECT * FROM tg_korisnik WHERE email = ?";
-		$params = array($email);
+		$query = "SELECT * FROM tg_korisnik WHERE email = ? OR kime = ?";
+		$params = array($email, $email);
 
 		$result = $this->query($query, $params);
 
@@ -108,32 +102,22 @@ class MySQLDB
 		if(password_verify($password, $user["lozinka"])) {
 			$_SESSION["user_id"] = $user["ID"];
 			$_SESSION["username"] = $user["kime"];
-			//$_SESSION["admin"] = $user["razinaID"];
+			$query = "SELECT tg_pravo.opis FROM tg_prava JOIN tg_korisnik ON tg_prava.korisnikID = tg_korisnik.ID JOIN tg_pravo ON tg_prava.pravoID = tg_pravo.ID WHERE kime = ?";
+			$params = array($user["kime"]);
+			$_SESSION["role"] = $this->query($query, $params)["opis"];
 			return true;
 		}
 		return false;
 	}
 
-	function add_admin($username) {
-		$query = "SELECT ID FROM tg_korisnik WHERE kime = ?";
-		$params = array($username);
-
-		$result = $this->query($query, $params);
-
-		return false; // Temporary
-
-		if(!($result && count($result) > 0)) {
-			return false;
-		}
-
-		$query = "UPDATE tg_prava SET pravoID=1 WHERE korisnikID = ?";
-		$params = array($result["ID"]);
-
+	function add_admin($username) {	
+	$query = "UPDATE tg_prava JOIN tg_korisnik ON tg_prava.korisnikID = tg_korisnik.ID JOIN tg_pravo ON tg_prava.pravoID = tg_pravo.ID SET tg_prava.pravoID = (SELECT ID FROM tg_pravo WHERE opis=?) WHERE tg_korisnik.kime = ?;"; 
+	$params = array("admin", $username);
+	
 		if($this->query($query, $params) == 1) {
-			return true;
-		}
-		return false;
-		
+		return true;
+	}
+	return false;	
 	}
 }
 

@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if($_SESSION["admin"] != "1") {
+if($_SESSION["role"] != "admin") {
 	header("Location: /dashboard.php");
 }
 ?>

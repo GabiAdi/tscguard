@@ -1,4 +1,5 @@
 <?php
+session_start();
 if(isset($_SESSION["user_id"])) {
 	header("Location: /dashboard.php");
 }
@@ -8,7 +9,7 @@ if(isset($_SESSION["user_id"])) {
 	<body>
 		<h1>Login</h1>
 		<form action="login_user.php" method="post">
-			<label for="email">Email</label>
+			<label for="email">Email or Username</label>
 			<input name="email" type="text" id="email" required><br>
 
 			<label for="password">Password</label>

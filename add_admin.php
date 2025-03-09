@@ -2,7 +2,7 @@
 session_start();
 include_once "includes/connection.php";
 
-if($_SESSION["admin"] != "1") {
+if($_SESSION["role"] != "admin") {
 	header("Location: /dashboard.php");
 }
 $db = new MySQLDB();

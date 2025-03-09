@@ -4,10 +4,10 @@ if(!isset($_SESSION["user_id"])) {
 	header("Location: /login.php");	
 }
 
-echo "<p>Hello, " . $_SESSION["username"] . "</p><br>";
-//if($_SESSION["admin"] == "1") {
-//	echo "<a href=\"admin_dashboard.php\">Admin dashboard</a>";
-//}
+echo "<p>Hello, " . $_SESSION["username"] . " of role " . $_SESSION["role"] . "</p><br>";
+if($_SESSION["role"] == "admin") {
+	echo "<a href=\"admin_dashboard.php\">Admin dashboard</a>";
+}
 ?>
 <html>
 	<body>
