@@ -1,8 +1,8 @@
 <?php
 
-class MySQLDB 
+class MySQLDB // Klasa za spajanje na MySQL bazu 
 {
-	var $host = "localhost";
+	var $host = "localhost"; // Ip adresa servera s bazom
 	var $username = "root";
 	var $password = "";
 	var $database = "tscguard";
@@ -14,7 +14,7 @@ class MySQLDB
 		$this->connect();
 	}
 
-	function get_db() 
+	function get_db()  // Ako postoji konekcija s bazom vraca konekcuju ako ne onda se spaja s bazom
 	{
 		if(!isset($this->db)) {
 			$this->connect();
@@ -34,12 +34,12 @@ class MySQLDB
 		}
 	}
 
-	function query($query, $params = array()) 
+	function query($query, $params = array()) // query funkcija koristena samo u klasi 
 	{
 		$db = $this->get_db();	
 		
 		try {
-			$stmt = $db->prepare($query);
+			$stmt = $db->prepare($query); // Priprema upit 
 			if ($stmt === false) {
                 throw new Exception("Prepare failed: " . $db->error);
 			}
@@ -49,10 +49,10 @@ class MySQLDB
                 $stmt->bind_param($types, ...$params);
 			}
 
-			$stmt->execute($params);
+			$stmt->execute($params); // Izvrsava upit s parametrima (Mijenja ? s parametrom)
 			$result = $stmt->get_result();
 			
-			if($result) {
+			if($result) { // Ako postoji rezultat vraca ga
 				return $result->fetch_assoc();
 			}
 			
@@ -69,21 +69,22 @@ class MySQLDB
 		$query = "SELECT ID FROM tg_korisnik WHERE email = ? OR kime = ?";
 		$params = array($email, $username);
 
-		if($this->query($query, $params)) {
+		if($this->query($query, $params)) { // Zovemo funkciju query koja salje upit bazi, ako korisnik postoji onda vracamo false za neuspjesno kreiranje
 			error_log("User already exists");
 			return false;
 		}
+		// Ako ne postoji nastavlja se
 		
-		$query = "INSERT INTO tg_korisnik (email, kime, lozinka) VALUES (?,?,?)";	
+		$query = "INSERT INTO tg_korisnik (email, kime, lozinka) VALUES (?,?,?)";
 		$params = array($email, $username, $hash); 		
 
-		if(!$this->query($query, $params)) {
+		if(!$this->query($query, $params)) { // Dodaje korisnika u bazu
 			error_log("Failed to create user");
 			return false;
 		}
 		$query = "INSERT INTO tg_prava (korisnikID, pravoID) SELECT tg_korisnik.ID, tg_pravo.ID FROM tg_korisnik JOIN tg_pravo ON tg_pravo.opis = ? WHERE tg_korisnik.kime = ?;"; 
 		$params = array("user", $username);	
-		$this->query($query, $params);
+		$this->query($query, $params); // Dodaje korisniku pravo USER
 		return true;
 	}
 
@@ -94,13 +95,13 @@ class MySQLDB
 
 		$result = $this->query($query, $params);
 
-		if(!($result && count($result) > 0)) {
+		if(!($result && count($result) > 0)) { // Trazimo korisnika
 			return false;
 		}
 		$user = $result;
 		error_log("User" . $user);
-		if(password_verify($password, $user["lozinka"])) {
-			$_SESSION["user_id"] = $user["ID"];
+		if(password_verify($password, $user["lozinka"])) { // Provjerava ako je hash u bazi isti kao hash upisanog passworda 
+			$_SESSION["user_id"] = $user["ID"]; // Postavlja varijable sesije kako bi znali je li korisnik admin, je li ulogiran ...
 			$_SESSION["username"] = $user["kime"];
 			$query = "SELECT tg_pravo.opis FROM tg_prava JOIN tg_korisnik ON tg_prava.korisnikID = tg_korisnik.ID JOIN tg_pravo ON tg_prava.pravoID = tg_pravo.ID WHERE kime = ?";
 			$params = array($user["kime"]);
@@ -112,7 +113,7 @@ class MySQLDB
 
 	function add_admin($username) {	
 	$query = "UPDATE tg_prava JOIN tg_korisnik ON tg_prava.korisnikID = tg_korisnik.ID JOIN tg_pravo ON tg_prava.pravoID = tg_pravo.ID SET tg_prava.pravoID = (SELECT ID FROM tg_pravo WHERE opis=?) WHERE tg_korisnik.kime = ?;"; 
-	$params = array("admin", $username);
+	$params = array("admin", $username); // Postavlja prava korisnika na admin
 	
 		if($this->query($query, $params) == 1) {
 		return true;

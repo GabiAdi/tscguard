@@ -23,7 +23,7 @@ if(isset($_SESSION["user_id"])) {
 			<input type="submit" value="Submit">
 		</form>
 		<?php
-		if(isset($_GET["failed"])) {
+		if(isset($_GET["failed"])) { // Ako je redirektiran s failed zastavicom prikazuje poruku
 		?>
 		<p>User already exists</p>
 		<?php

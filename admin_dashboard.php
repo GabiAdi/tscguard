@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if($_SESSION["role"] != "admin") {
+if($_SESSION["role"] != "admin") { // Redirekcija ako korisnik nije admin
 	header("Location: /dashboard.php");
 }
 ?>
