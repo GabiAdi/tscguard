@@ -9,7 +9,8 @@ $db = new MySQLDB();
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
 	$username = trim($_POST["username"]);
-	if($db->add_admin($username)) { // Poziva funkciju iz klase MySQLDB
+	$role = trim($_POST["role"]);
+	if($db->add_role($username, $role)) { // Poziva funkciju iz klase MySQLDB
 		echo "Success";
 	} else {
 		echo "Failed to add admin to " . $username;

@@ -111,14 +111,24 @@ class MySQLDB // Klasa za spajanje na MySQL bazu
 		return false;
 	}
 
-	function add_admin($username) {	
-	$query = "UPDATE tg_prava JOIN tg_korisnik ON tg_prava.korisnikID = tg_korisnik.ID JOIN tg_pravo ON tg_prava.pravoID = tg_pravo.ID SET tg_prava.pravoID = (SELECT ID FROM tg_pravo WHERE opis=?) WHERE tg_korisnik.kime = ?;"; 
-	$params = array("admin", $username); // Postavlja prava korisnika na admin
+	function add_role($username, $role) {	
+		$query = "UPDATE tg_prava JOIN tg_korisnik ON tg_prava.korisnikID = tg_korisnik.ID JOIN tg_pravo ON tg_prava.pravoID = tg_pravo.ID SET tg_prava.pravoID = (SELECT ID FROM tg_pravo WHERE opis=?) WHERE tg_korisnik.kime = ?;"; 
+		$params = array($role, $username); // Postavlja prava korisnika na admin
 	
 		if($this->query($query, $params) == 1) {
-		return true;
+			return true;
+		}
+		return false;	
 	}
-	return false;	
+
+	function add_question($username, $text, $points, $hint) {
+		$query = "INSERT INTO tg_pitanje (korisnikID, tekstPitanje, brojBodova, hint, brojPonudenih) SELECT tg_korisnik.ID, ?, ?, ?, ? FROM tg_korisnik WHERE tg_korisnik.kime = ?;"; 	
+		$paramas = array($text, $points, $hint, "0", $username);
+
+		if($this->query($query, $paramas) == 1) {
+			return true;
+		}
+		return false;
 	}
 }
 

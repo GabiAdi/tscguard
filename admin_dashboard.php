@@ -8,11 +8,17 @@ if($_SESSION["role"] != "admin") { // Redirekcija ako korisnik nije admin
 
 <html>
 	<body>
-		<h1>Add admin</h1>
-		<form action="add_admin.php" method="post">
+		<h1>Add role</h1>
+		<form action="add_role.php" method="post">
 			<label for="username">Username</label>
 			<input name="username" type="text" id="username" required><br>
 			<input type="submit" value="Submit">
+			<label for="role">Role</label>
+			<select id="role" name="role" required>
+				<option value="user">Korisnik</option>
+				<option value="author">Autor</option>
+				<option value="admin">Admin</option>
+			</select>
 		</form>
 	</body>
 </html>
