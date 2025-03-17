@@ -12,7 +12,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 	$text = trim($_POST["question"]);
 	$points = trim($_POST["points"]);
 	$hint = trim($_POST["hint"]);
-	if($db->add_question($username, $text, $points, $hint)) { 
+	$category = trim($_POST["category"]);
+	if($db->add_question($username, $text, $points, $hint, $category)) { 
 		echo "Success";
 	} else {
 		echo "Failed to add question";

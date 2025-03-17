@@ -18,6 +18,12 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "author") {
 			<label for="hint">Hint</label>
 			<textarea name="hint" type="text" id="hint" rows="10" cols="30" required></textarea><br>
 			<input type="submit" value="Submit">
+
+			<select id="category" name="category" required>
+				<option value="kategorija1">Kategorija1</option>
+				<option value="kategorija2">Kategorija2</option>
+				<option value="kategorija3">Kategorija3</option>
+			</select>
 		</form>
 	</body>
 </html>

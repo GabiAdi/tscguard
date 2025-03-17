@@ -121,14 +121,27 @@ class MySQLDB // Klasa za spajanje na MySQL bazu
 		return false;	
 	}
 
-	function add_question($username, $text, $points, $hint) {
+	function add_question($username, $text, $points, $hint, $category) {
+		$query = "SELECT * FROM tg_pitanje WHERE tekstPitanje = ?";
+		$params = array($text);
+
+		if($this->query($query, $params)) {
+			return false;
+		}
+
 		$query = "INSERT INTO tg_pitanje (korisnikID, tekstPitanje, brojBodova, hint, brojPonudenih) SELECT tg_korisnik.ID, ?, ?, ?, ? FROM tg_korisnik WHERE tg_korisnik.kime = ?;"; 	
 		$paramas = array($text, $points, $hint, "0", $username);
 
-		if($this->query($query, $paramas) == 1) {
-			return true;
+		if($this->query($query, $paramas) != 1) {
+			return false;
 		}
-		return false;
+
+		$query = "INSERT INTO tg_kategorija (kategorijaID, pitanjeID) SELECT tg_kategorije.ID, tg_pitanje.ID FROM tg_kategorije JOIN tg_pitanje ON tg_pitanje.tekstPitanje = ? WHERE tg_kategorije.naziv = ?";
+		$paramas = array($text, $category);
+		if($this->query($query, $paramas) != 1) {
+			return false;
+		}
+		return true;
 	}
 }
 
