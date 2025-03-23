@@ -143,6 +143,25 @@ class MySQLDB // Klasa za spajanje na MySQL bazu
 		}
 		return true;
 	}
+
+	function add_answer($id, $text, $answer, $correct, $explanation) {
+		$query = "SELECT * FROM tg_pitanje WHERE tekstPitanje = ?";
+		$params = array($text);
+
+		$result = $this->query($query, $params);
+
+		if(!$result) {
+			return false;
+		}
+		
+		$query = "INSERT INTO tg_odgovori(pitanjeID, tekst, tocno, opisNetocnog, autorID) VALUES (?, ?, ?, ?, ?);";
+		$params = array($result["ID"], $text, $correct, $explanation, $id);
+
+		if($this->query($query, $params)) {
+			return true;
+		}
+		return false;
+	}
 }
 
 ?>
