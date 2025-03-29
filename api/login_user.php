@@ -1,11 +1,12 @@
 <?php
 session_start();
-include_once "includes/connection.php";
+include_once "../includes/connection.php";
 
 $db = new MySQLDB();
 
 if(isset($_SESSION["user_id"])) {
 	header("Location: /dashboard.php");
+	die();
 }
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {

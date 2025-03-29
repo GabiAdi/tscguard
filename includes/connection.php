@@ -1,5 +1,4 @@
 <?php
-
 class MySQLDB // Klasa za spajanje na MySQL bazu 
 {
 	var $host = "localhost"; // Ip adresa servera s bazom
@@ -49,11 +48,11 @@ class MySQLDB // Klasa za spajanje na MySQL bazu
                 $stmt->bind_param($types, ...$params);
 			}
 
-			$stmt->execute($params); // Izvrsava upit s parametrima (Mijenja ? s parametrom)
+			$stmt->execute(); // Izvrsava upit s parametrima (Mijenja ? s parametrom)
 			$result = $stmt->get_result();
 			
 			if($result) { // Ako postoji rezultat vraca ga
-				return $result->fetch_assoc();
+				return $result->fetch_all(MYSQLI_ASSOC);
 			}
 			
 			return true;
@@ -98,14 +97,13 @@ class MySQLDB // Klasa za spajanje na MySQL bazu
 		if(!($result && count($result) > 0)) { // Trazimo korisnika
 			return false;
 		}
-		$user = $result;
-		error_log("User" . $user);
+		$user = $result[0];
 		if(password_verify($password, $user["lozinka"])) { // Provjerava ako je hash u bazi isti kao hash upisanog passworda 
 			$_SESSION["user_id"] = $user["ID"]; // Postavlja varijable sesije kako bi znali je li korisnik admin, je li ulogiran ...
 			$_SESSION["username"] = $user["kime"];
 			$query = "SELECT tg_pravo.opis FROM tg_prava JOIN tg_korisnik ON tg_prava.korisnikID = tg_korisnik.ID JOIN tg_pravo ON tg_prava.pravoID = tg_pravo.ID WHERE kime = ?";
 			$params = array($user["kime"]);
-			$_SESSION["role"] = $this->query($query, $params)["opis"];
+			$_SESSION["role"] = $this->query($query, $params)[0]["opis"];
 			return true;
 		}
 		return false;
@@ -136,17 +134,17 @@ class MySQLDB // Klasa za spajanje na MySQL bazu
 			return false;
 		}
 
-		$query = "INSERT INTO tg_kategorija (kategorijaID, pitanjeID) SELECT tg_kategorije.ID, tg_pitanje.ID FROM tg_kategorije JOIN tg_pitanje ON tg_pitanje.tekstPitanje = ? WHERE tg_kategorije.naziv = ?";
-		$paramas = array($text, $category);
-		if($this->query($query, $paramas) != 1) {
+		$query = "INSERT INTO tg_kategorija (kategorijaID, pitanjeID) SELECT ?, tg_pitanje.ID FROM tg_pitanje WHERE tg_pitanje.tekstPitanje = ?"; ;
+		$params = array($category, $text);
+		if($this->query($query, $params) != 1) {
 			return false;
 		}
 		return true;
 	}
 
-	function add_answer($id, $text, $answer, $correct, $explanation) {
-		$query = "SELECT * FROM tg_pitanje WHERE tekstPitanje = ?";
-		$params = array($text);
+	function add_answer($id, $user_id, $answer, $correct, $explanation) {
+		$query = "SELECT * FROM tg_pitanje WHERE ID = ?";
+		$params = array($id);
 
 		$result = $this->query($query, $params);
 
@@ -155,7 +153,7 @@ class MySQLDB // Klasa za spajanje na MySQL bazu
 		}
 		
 		$query = "INSERT INTO tg_odgovori(pitanjeID, tekst, tocno, opisNetocnog, autorID) VALUES (?, ?, ?, ?, ?);";
-		$params = array($result["ID"], $text, $correct, $explanation, $id);
+		$params = array($id, $answer, $correct, $explanation, $user_id);
 
 		if($this->query($query, $params)) {
 			return true;

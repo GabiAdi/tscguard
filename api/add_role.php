@@ -1,9 +1,10 @@
 <?php
 session_start();
-include_once "includes/connection.php";
+include_once "../includes/connection.php";
 
 if($_SESSION["role"] != "admin") { // Ako korisnik nije admin redirektamo ga na dashboard
 	header("Location: /dashboard.php");
+	die();
 }
 $db = new MySQLDB();
 

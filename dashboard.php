@@ -1,7 +1,8 @@
 <?php
 session_start();
 if(!isset($_SESSION["user_id"])) {
-	header("Location: /login.php");	
+	header("Location: /login.php");
+	die();	
 }
 
 echo "<p>Hello, " . $_SESSION["username"] . " of role " . $_SESSION["role"] . "</p><br>";
@@ -13,8 +14,8 @@ if($_SESSION["role"] == "admin") {
 }
 ?>
 <html>
-	<body>
-			
-		<a href="logout.php">Logout</a>
+	<body>	
+		<a href="question_browser.php">Question browser</a>
+		<a href="api/logout.php">Logout</a>
 	</body>
 </html>

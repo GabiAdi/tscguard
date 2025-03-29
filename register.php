@@ -1,13 +1,14 @@
 <?php
 if(isset($_SESSION["user_id"])) {
 	header("Location: /dashboard.php");
+	die();
 }
 ?>
 
 <html>
 	<body>
 		<h1>Register</h1>
-		<form action="create_user.php" method="post">
+		<form action="api/create_user.php" method="post">
 			<label for="email">Email</label>
 			<input name="email" type="text" id="email" required><br>
 
@@ -16,7 +17,7 @@ if(isset($_SESSION["user_id"])) {
 
 			<label for="password">Password</label>
 			<input name="password" type="password" id="password" required><br>
-			
+
 			<label for="password2">Confirm Password</label>
 			<input name="password2" type="password" id="password2" required><br>
 

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once "includes/connection.php";
+include_once "../includes/connection.php";
 
 if($_SESSION["role"] != "admin" && $_SESSION["role"] != "author") { 
 	header("Location: /dashboard.php");
@@ -8,12 +8,12 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "author") {
 $db = new MySQLDB();
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
-	$username = $_SESSION["username"];
-	$text = trim($_POST["question"]);
-	$points = trim($_POST["points"]);
-	$hint = trim($_POST["hint"]);
-	$category = trim($_POST["category"]);
-	if($db->add_question($username, $text, $points, $hint, $category)) { 
+	$answer = trim($_POST["answer"]);
+	$id = trim($_POST["id"]);
+	$user_id = $_SESSION["user_id"];
+	$correct = trim($_POST["correct"]) == "on";
+	$explanation = trim($_POST["explanation"]);
+	if($db->add_answer($id, $user_id, $answer, $correct, $explanation)) { 
 		echo "Success";
 	} else {
 		echo "Failed to add question";
