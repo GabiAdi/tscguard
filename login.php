@@ -8,6 +8,7 @@ if(isset($_SESSION["user_id"])) {
 
 <html>
 	<body>
+		<a href="index.php">Nazad</a>
 		<h1>Login</h1>
 		<form action="api/login_user.php" method="post">
 			<label for="email">Email or Username</label>

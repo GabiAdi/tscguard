@@ -156,6 +156,9 @@ class MySQLDB // Klasa za spajanje na MySQL bazu
 		$params = array($id, $answer, $correct, $explanation, $user_id);
 
 		if($this->query($query, $params)) {
+			$query = "UPDATE tg_pitanje SET brojPonudenih = brojPonudenih + 1 WHERE ID = ?";
+			$params = array($id);
+			$this->query($query, $params);
 			return true;
 		}
 		return false;

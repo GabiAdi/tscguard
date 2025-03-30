@@ -1,5 +1,10 @@
 <?php
 session_start();
+if(!isset($_SESSION["user_id"])) {
+	header("Location: /login.php");
+	die();	
+}
+
 include_once "includes/connection.php";
 
 $db = new MySQLDB();
@@ -20,6 +25,8 @@ foreach ($questions as $question) {
 	$body->appendChild($appended);
 }
 
+
+echo "<a href=\"dashboard.php\">Nazad</a><br><br>";
 echo $doc->saveHTML();
 
 ?>
