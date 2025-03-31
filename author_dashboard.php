@@ -15,7 +15,7 @@ $result = $db->query($query, $params);
 
 <html>
 	<body>
-		<a href="dashboard.php">Nazad</a>
+		<a href="/dashboard.php">Nazad</a>
 		<h1>Add question</h1>
 		<form action="api/add_question.php" method="post">
 			<label for="question">Question</label>

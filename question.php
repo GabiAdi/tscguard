@@ -9,7 +9,7 @@ if(!isset($_SESSION["user_id"])) {
 include_once "includes/connection.php";
 $db = new MySQLDB();
 
-echo "<a href=\"question_browser.php\">Nazad</a>";
+echo "<a href=\"/question_browser.php\">Nazad</a>";
 
 if(!isset($_GET["id"])) {
 	echo "Nema";

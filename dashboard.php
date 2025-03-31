@@ -15,7 +15,8 @@ if($_SESSION["role"] == "admin") {
 ?>
 <html>
 	<body>	
-		<a href="question_browser.php">Question browser</a>
+		<a href="/question_browser.php">Question browser</a>
+		<a href="/test.php">Test</a>
 		<a href="api/logout.php">Logout</a>
 	</body>
 </html>

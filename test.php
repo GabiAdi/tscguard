@@ -4,6 +4,11 @@ include_once "includes/connection.php";
 
 $db = new MySQLDB();
 
+if(!isset($_SESSION["user_id"])) {
+	header("Location: /index.php");
+	die();
+}
+
 $query = "SELECT tg_pitanje.ID,tekstPitanje,tg_korisnik.kime,brojBodova,hint,brojPonudenih FROM tg_pitanje JOIN tg_korisnik ON tg_korisnik.ID = tg_pitanje.korisnikID WHERE brojPonudenih > 2;";
 $params = array();
 
@@ -42,8 +47,9 @@ foreach ($questions as $question) {
 	$answers = $db->query($query, $params);	
 	foreach ($answers as $answer) {
 		$appended = $doc->createElement("input");
-		$appended->setAttribute("name", $question["ID"]);
-		$appended->setAttribute("id", $answer["ID"]);
+		$appended->setAttribute("name", "answers[" . $question["ID"] . "]");
+		$appended->setAttribute("id", $question["ID"]);
+		$appended->setAttribute("value", $answer["ID"]);
 		$appended->setAttribute("type", "radio");
 		$appended->id = $answer["ID"];
 		$form->appendChild($appended);
@@ -64,7 +70,7 @@ $form->appendChild($appended);
 $appended = $doc->createElement("br");
 $body->appendChild($appended);
 
-echo "<a href=\"dashboard.php\">Nazad</a><br><br>";
+echo "<a href=\"/dashboard.php\">Nazad</a><br><br>";
 echo $doc->saveHTML();
 
 ?>

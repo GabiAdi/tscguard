@@ -7,7 +7,7 @@ if(isset($_SESSION["user_id"])) {
 
 <html>
 	<body>
-		<a href="index.php">Nazad</a>
+		<a href="/index.php">Nazad</a>
 		<h1>Register</h1>
 		<form action="api/create_user.php" method="post">
 			<label for="email">Email</label>

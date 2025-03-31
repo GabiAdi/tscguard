@@ -9,7 +9,7 @@ if($_SESSION["role"] != "admin") { // Redirekcija ako korisnik nije admin
 
 <html>
 	<body>
-		<a href="dashboard.php">Nazad</a>
+		<a href="/dashboard.php">Nazad</a>
 		<h1>Add role</h1>
 		<form action="api/add_role.php" method="post">
 			<label for="username">Username</label>
