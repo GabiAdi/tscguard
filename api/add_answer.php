@@ -3,7 +3,7 @@ session_start();
 include_once "../includes/connection.php";
 
 if($_SESSION["role"] !== "admin" && $_SESSION["role"] !== "author") { 
-	header("Location: /dashboard.php");
+	header("Location: /index.php");
 }
 
 if($_SERVER["REQUEST_METHOD"] !== "POST") {

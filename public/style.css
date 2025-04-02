@@ -1,0 +1,251 @@
+* {
+    box-sizing: border-box;
+    min-height: fit-content;
+    min-width: fit-content;
+    font-family: "Raleway", sans-serif;
+    font-optical-sizing: auto;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    animation-name: gradient;
+    animation-duration: 15s;
+    animation-direction: alternate;
+    background-size: 400% 400%;
+    background-image: linear-gradient(45deg, #12c2e9, #c471ed, #f64f59);
+}
+
+.header {
+    display: flex;
+    background-color: rgb(0, 0, 0);
+    width: 100%;
+    height: 7vh;
+    color: white;
+    padding: 5px;
+    min-height: 50px;
+    min-width: fit-content;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+}
+.block{
+    transition: all;
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 100px;
+    margin-left: 10px;
+    justify-content: center;
+    align-items: center;
+}
+.block_text{
+    transition: all ease-in-out 0.5s;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    -webkit-text-decoration-color: transparent;
+    -moz-text-decoration-color: transparent;
+    color: white;
+    font-weight: 300;
+    font-size: 2em;
+}
+.block_text:hover{
+    text-decoration-color: white;
+    -webkit-text-decoration-color: white;
+    -moz-text-decoration-color: white;
+}
+.logo{
+    transition: all 0.5s;
+    display: flex;
+    min-height: 40px;
+    min-width: 40px;
+    height: 6vh;
+    width: 6vh;
+    align-self: left;
+    object-fit: contain;
+    background-color: transparent;
+    border-color: transparent;
+    border-style: none;
+    border-bottom-style: solid;
+    border-radius: 100px;
+}
+.logo:hover{
+    border-bottom-color: white;
+}
+.mid {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.login_container {
+    opacity: 1;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50vh;
+    height: 35vh;
+    background-color: rgba(221, 215, 215, 0.356);
+    box-shadow: 0px 5px 10px 10px  rgba(0, 0, 0, 0.24);
+    border-radius: 20px;
+    padding: 15px;
+    font-size: 2em;
+    font-weight: 300;
+    font-style: bold;
+    -webkit-transition: all 1s;
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 1s;
+    z-index: 5;
+}
+.outer_register,.outer_login,.login,.register{
+    border: 0;
+    font-size: 1em;
+    border-radius:10px;
+    border:0;
+}
+.outer_register, .outer_login {
+    flex: 1;
+    width: 80%;
+    height: 8vh;
+    margin: 8px;
+    padding: 4px;
+    border-radius: 12px;
+    background: black;
+    position: relative;
+    overflow: hidden;
+    transition: width 0.5s ease-in-out;
+    border:0;
+}
+
+.outer_register::before, .outer_login::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        45deg,
+        rgba(255, 0, 0, 1) 0%,
+        rgba(255, 154, 0, 1) 10%,
+        rgba(208, 222, 33, 1) 20%,
+        rgba(79, 220, 74, 1) 30%,
+        rgba(63, 218, 216, 1) 40%,
+        rgba(47, 201, 226, 1) 50%,
+        rgba(28, 127, 238, 1) 60%,
+        rgba(95, 21, 242, 1) 70%,
+        rgba(186, 12, 248, 1) 80%,
+        rgba(251, 7, 217, 1) 90%,
+        rgba(255, 0, 0, 1) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    z-index: 0;
+    animation-name: gradient;
+    animation-duration: 8s;
+    animation-direction: normal;
+    animation-iteration-count: infinite;
+    background-size: 800% 800%;
+}
+
+.outer_register:hover::before, .outer_login:hover::before {
+    opacity: 1;
+}
+.outer_login:hover, .outer_register:hover{
+    width:90%;
+}
+
+.login, .register {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+    transition: all 0.1s ease-in-out; 
+    border:0;
+}
+
+.register:active, .login:active{
+    background-color: rgb(189, 189, 189)
+}
+
+@keyframes rainbow{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+@keyframes gradient {
+    0% {
+        background-position: 0% 0%;
+    }
+    20% {
+        background-position: 50% 0%;
+    }
+    40% {
+        background-position: 75% 25%;
+    }
+    60% {
+        background-position: 50% 75%;
+    }
+    80%{
+        background-position: 25% 25%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
+}
+.welc_text{
+    margin:0px;
+    font-size: 2em;
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); 
+    z-index: 9; 
+    display: none;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+}
+@-webkit-keyframes fade{
+    from{
+        opacity: 0%;
+        -webkit-transition: opacity;
+    }
+    to{
+        opacity:100%M
+    }
+    
+}
+@media only screen and (max-height:300px) {
+   .login_container{
+        flex-direction:row;
+    }
+}
+.form{
+    opacity: 0;
+    top:25%;
+    position:fixed;
+    z-index: 10;
+    transition: all 2s;
+    display: none;
+    align-self: center;
+}
+.form_container{
+    height: 50vh;
+    max-width: 50vh;
+    padding:10px;
+    background-color: white;
+ }

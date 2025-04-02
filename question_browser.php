@@ -26,7 +26,7 @@ foreach ($questions as $question) {
 }
 
 
-echo "<a href=\"/dashboard.php\">Nazad</a><br><br>";
+echo "<a href=\"/index.php\">Nazad</a><br><br>";
 echo $doc->saveHTML();
 
 ?>

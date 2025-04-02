@@ -70,7 +70,7 @@ $form->appendChild($appended);
 $appended = $doc->createElement("br");
 $body->appendChild($appended);
 
-echo "<a href=\"/dashboard.php\">Nazad</a><br><br>";
+echo "<a href=\"/index.php\">Nazad</a><br><br>";
 echo $doc->saveHTML();
 
 ?>

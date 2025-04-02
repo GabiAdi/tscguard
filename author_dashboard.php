@@ -2,7 +2,7 @@
 include_once "includes/connection.php";
 session_start();
 if($_SESSION["role"] != "admin" && $_SESSION["role"] != "author") {
-	header("Location: /dashboard.php");
+	header("Location: /index.php");
 	die();
 }
 $db = new MySQLDB();
@@ -15,7 +15,7 @@ $result = $db->query($query, $params);
 
 <html>
 	<body>
-		<a href="/dashboard.php">Nazad</a>
+		<a href="/index.php">Nazad</a>
 		<h1>Add question</h1>
 		<form action="api/add_question.php" method="post">
 			<label for="question">Question</label>

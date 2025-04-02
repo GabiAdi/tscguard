@@ -2,14 +2,14 @@
 session_start();
 
 if($_SESSION["role"] != "admin") { // Redirekcija ako korisnik nije admin
-	header("Location: /dashboard.php");
+	header("Location: /index.php");
 	die();
 }
 ?>
 
 <html>
 	<body>
-		<a href="/dashboard.php">Nazad</a>
+		<a href="/index.php">Nazad</a>
 		<h1>Add role</h1>
 		<form action="api/add_role.php" method="post">
 			<label for="username">Username</label>

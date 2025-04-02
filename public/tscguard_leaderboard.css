@@ -1,0 +1,208 @@
+/* Globalne postavke */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: #141e30;
+    color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    width: 80%;
+    max-width: 1200px;
+    padding: 30px;
+    overflow: hidden;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #00eaff;
+}
+
+.pretrazi-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.pretrazi-container input {
+    padding: 12px;
+    width: 50%;
+    font-size: 18px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    background: #1d2b3a;
+    color: white;
+    transition: background 0.3s ease;
+}
+
+.pretrazi-container input:focus {
+    background: #3a4e69;
+}
+
+.tablica-container {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th, td {
+    padding: 16px;
+    border-bottom: 1px solid #555;
+    text-align: center;
+}
+
+th {
+    background: #00eaff;
+    color: #0a0a0a;
+    font-size: 18px;
+    text-transform: uppercase;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+}
+
+td {
+    background: #1d2b3a;
+    font-size: 16px;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+}
+
+.top1 td { background: #ffcc00 !important; font-weight: bold; }
+.top2 td { background: #c0c0c0 !important; font-weight: bold; }
+.top3 td { background: #cd7f32 !important; font-weight: bold; }
+
+.no-results {
+    text-align: center;
+    color: red;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* Scrollbar stilovi */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #555, #00eaff);
+    border-radius: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 234, 255, 0.7);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    box-shadow: 0 0 20px rgba(0, 234, 255, 0.9);
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+/* Navigacijski Meni */
+nav {
+    background: #1d2b3a;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.nav-menu {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu li {
+    margin: 0 15px;
+    border-left: 2px solid #555;
+}
+
+.nav-menu li:first-child { border-left: none; }
+
+.nav-menu a {
+    text-decoration: none;
+    color: #00eaff;
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: background 0.3s ease;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.nav-menu a:hover {
+    color: #fff;
+    background: #00eaff;
+}
+
+.menu-icon {
+    display: none;
+    cursor: pointer;
+    padding: 10px;
+    background: #00eaff;
+    border-radius: 5px;
+}
+
+.menu-icon .line {
+    width: 30px;
+    height: 4px;
+    background: white;
+    margin: 6px 0;
+    border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 250px;
+        height: 80vh;
+        position: absolute;
+        justify-content:space-between;
+        top: 60px;
+        left: 0;
+        background: #1d2b3a;
+        padding: 20px 0;
+        border-right: 3px solid #00eaff;
+    }
+
+    .nav-menu.active { display: flex; }
+
+    .menu-icon {
+        display: flex;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+    }
+
+    .nav-menu a {
+        margin: 15px 0;
+        font-size: 20px;
+        padding-left: 20px;
+    }
+}
