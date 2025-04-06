@@ -1,5 +1,8 @@
 <?php
 session_start();
+include_once "includes/connection.php";
+
+$db = new MySQLDB();
 ?>
 <html lang="en">
 <head>
@@ -35,21 +38,21 @@ session_start();
             <li><a href="#">O nama</a></li>
             <hr>
 <?php
-			if($_SESSION["role"] == "admin" || $_SESSION["role"] == "author") { ?>	
-				<li><a href="author_dashboard.php">Autor dashboard</a></li>
-				<hr>
-<?php		}
-			if($_SESSION["role"] == "admin") { ?>
-				<li><a href="admin_dashboard.php">Admin panel</a></li>
-				<hr>
-<?php		} 
-			if(isset($_SESSION["user_id"])) { ?>	
-				<li><a href="question_browser.php">Lista pitanja</a></li>
-				<hr>
-				<li><a href="test.php">Test</a></li>
-				<hr>
-				<li><a href="api/logout.php">Logout</a></li>
-				<hr>
+			if(isset($_SESSION["user_id"])) {
+				if($_SESSION["role"] == "admin" || $_SESSION["role"] == "author") { ?>	
+					<li><a href="author_dashboard.php">Autor dashboard</a></li>
+					<hr>
+<?php			}
+				if($_SESSION["role"] == "admin") { ?>
+					<li><a href="admin_dashboard.php">Admin panel</a></li>
+					<hr>
+<?php			} ?>
+					<li><a href="question_browser.php">Lista pitanja</a></li>
+					<hr>
+					<li><a href="test.php">Test</a></li>
+					<hr>
+					<li><a href="api/logout.php">Logout</a></li>
+					<hr>
 <?php		} ?>
         </ul>
     </nav>
@@ -58,14 +61,18 @@ session_start();
         <header class="header">
             <div class="title">Dobro došli na našu stranicu</div>
             <div class="subtitle">Odaberite kategoriju koju želite odabrati:</div>
-        </header>
-
-        <section class="categories">
-            <div class="category">Prva kategorija</div>
-            <div class="category">Druga kategorija</div>
-            <div class="category">Treća kategorija</div>
-            <div class="category">Četvrta kategorija</div>
-        </section>
+		</header>
+		<form method="POST" action="api/start_test.php">
+			<section class="categories">
+<?php
+		$categories = $db->query("SELECT ID,naziv FROM tg_kategorije", array());
+		foreach ($categories as $category) {
+			echo "<button class=\"category\" type=\"submit\" name=\"category\" value=\"" . $category["ID"] . "\" id=\"" . $category["ID"] . "\">" . $category["naziv"] . "</button>";
+		}	
+					
+?>			
+			</section>
+		</form>
     </div>
 
     <script>
