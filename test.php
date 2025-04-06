@@ -9,8 +9,15 @@ if(!isset($_SESSION["user_id"])) {
 	die();
 }
 
-$query = "SELECT tg_pitanje.ID,tekstPitanje,tg_korisnik.kime,brojBodova,hint,brojPonudenih FROM tg_pitanje JOIN tg_korisnik ON tg_korisnik.ID = tg_pitanje.korisnikID WHERE brojPonudenih > 2;";
-$params = array();
+if(!isset($_SESSION["test"])) {
+	header("Location: /index.php");
+	die();
+}
+
+$query = "SELECT tg_pitanje.ID, tg_pitanje.tekstPitanje, tg_korisnik.kime, tg_pitanje.brojBodova, tg_pitanje.hint, tg_pitanje.brojPonudenih FROM tg_kategorija JOIN tg_pitanje ON tg_pitanje.ID = tg_kategorija.pitanjeID JOIN tg_kategorije ON tg_kategorije.ID = tg_kategorija.kategorijaID JOIN tg_korisnik ON tg_korisnik.ID = tg_pitanje.korisnikID WHERE tg_kategorije.ID = ? AND tg_pitanje.brojPonudenih > 3;";
+$params = array($_SESSION["test"]["category"]);
+//$query = "SELECT tg_pitanje.ID,tekstPitanje,tg_korisnik.kime,brojBodova,hint,brojPonudenih FROM tg_pitanje JOIN tg_korisnik ON tg_korisnik.ID = tg_pitanje.korisnikID WHERE brojPonudenih > 2;";
+//$params = array();
 
 $questions = $db->query($query, $params);
 
@@ -26,9 +33,7 @@ $form->setAttribute("action", "/api/check_test.php");
 $form->setAttribute("method", "post");
 $body->appendChild($form);
 
-
-foreach ($questions as $question) {
-	
+foreach ($questions as $question) {	
 	$appended = $doc->createElement("h2", $question["tekstPitanje"]);
 	$form->appendChild($appended);
 	
@@ -71,6 +76,7 @@ $appended = $doc->createElement("br");
 $body->appendChild($appended);
 
 echo "<a href=\"/index.php\">Nazad</a><br><br>";
+echo "<p>Start: " . $_SESSION["test"]["start_time"] . "</p>";
+echo "<p>End: " . $_SESSION["test"]["end_time"] . "</p>";
 echo $doc->saveHTML();
-
 ?>

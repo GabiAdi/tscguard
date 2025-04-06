@@ -163,6 +163,32 @@ class MySQLDB // Klasa za spajanje na MySQL bazu
 		}
 		return false;
 	}
+
+	function id_insert($query, $params) {	
+		$db = $this->get_db();	
+		
+		try {
+			$stmt = $db->prepare($query); // Priprema upit 
+			if ($stmt === false) {
+                throw new Exception("Prepare failed: " . $db->error);
+			}
+
+			if (!empty($params)) {
+                $types = str_repeat('s', count($params)); 
+                $stmt->bind_param($types, ...$params);
+			}
+
+			$stmt->execute(); // Izvrsava upit s parametrima (Mijenja ? s parametrom)
+				
+			return $db->insert_id;
+			
+		} catch (Exception $e) {	
+			error_log($e->getMessage());
+			echo "Something went wrong, please try again later.";
+			return false;
+		}
+		return false;
+	}
 }
 
 ?>

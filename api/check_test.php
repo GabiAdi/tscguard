@@ -11,6 +11,11 @@ if($_SERVER["REQUEST_METHOD"] !== "POST") {
 	die("Invalid request");
 }
 
+if(empty($_SESSION["test"])) {
+	header("Location: /index.php");
+	die();
+}
+
 if(empty($_POST["answers"])) {
 	header("Location: /test.php");
 	die("Answer all quesitons!");
@@ -32,6 +37,14 @@ foreach ($answers as $questionID => $answerID) {
 		"questionID" => $questionID
 	];
 }
+
+$now = date("Y-m-d H:i:s");
+
+$query = "UPDATE tg_test SET vrijemeKraja = ? WHERE ID = ?";
+$params = array($now, $_SESSION["test"]["test_id"]);
+$db->query($query, $params);
+
+unset($_SESSION["test"]);
 
 header("Location: /rjesenja.php");
 ?>

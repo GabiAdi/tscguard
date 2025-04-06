@@ -3,6 +3,7 @@ session_start();
 include_once "includes/connection.php";
 
 $db = new MySQLDB();
+
 ?>
 <html lang="en">
 <head>
