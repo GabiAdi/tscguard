@@ -14,10 +14,8 @@ if(!isset($_SESSION["test"])) {
 	die();
 }
 
-$query = "SELECT tg_pitanje.ID, tg_pitanje.tekstPitanje, tg_korisnik.kime, tg_pitanje.brojBodova, tg_pitanje.hint, tg_pitanje.brojPonudenih FROM tg_kategorija JOIN tg_pitanje ON tg_pitanje.ID = tg_kategorija.pitanjeID JOIN tg_kategorije ON tg_kategorije.ID = tg_kategorija.kategorijaID JOIN tg_korisnik ON tg_korisnik.ID = tg_pitanje.korisnikID WHERE tg_kategorije.ID = ? AND tg_pitanje.brojPonudenih > 3;";
-$params = array($_SESSION["test"]["category"]);
-//$query = "SELECT tg_pitanje.ID,tekstPitanje,tg_korisnik.kime,brojBodova,hint,brojPonudenih FROM tg_pitanje JOIN tg_korisnik ON tg_korisnik.ID = tg_pitanje.korisnikID WHERE brojPonudenih > 2;";
-//$params = array();
+$query = "SELECT tg_pitanje.ID, tg_pitanje.tekstPitanje, tg_korisnik.kime, tg_pitanje.brojBodova, tg_pitanje.hint, tg_testovi.testIme FROM tg_pitanjenatestu JOIN tg_pitanje ON tg_pitanje.ID = tg_pitanjenatestu.pitanjeID JOIN tg_korisnik ON tg_pitanje.korisnikID = tg_korisnik.ID JOIN tg_testovi ON tg_testovi.ID = tg_pitanjenatestu.testID WHERE tg_testovi.ID = ?; ";
+$params = array($_SESSION["test"]["test_id"]);
 
 $questions = $db->query($query, $params);
 
@@ -26,6 +24,9 @@ libxml_use_internal_errors(true);
 $doc = new DOMDocument();
 $doc->loadHTML($html);
 $body = $doc->getElementById("body");
+
+$appended = $doc->createElement("h1", $questions[0]["testIme"]);
+$body->appendChild($appended);
 
 $form = $doc->createElement("form");
 $form->id = "form";

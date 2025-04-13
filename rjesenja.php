@@ -38,13 +38,14 @@ foreach ($_SESSION["answers"] as $answer) {
 	$full += $answer["points"];
 }
 
-$appended = $doc->createElement("p", $points . "/" . $full);
-$body->append($appended);
+//$appended = $doc->createElement("p", $points . "/" . $full);
+//$body->appendChild($appended);
 
 $appended = $doc->createElement("br");
 $body->appendChild($appended);
 
 echo "<a href=\"/test.php\">Nazad</a><br><br>";
+echo "<h1>". $points . "/" . $full ."</h1>";
 echo $doc->saveHTML();
 
 unset($_SESSION["answers"]);

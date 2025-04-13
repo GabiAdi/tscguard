@@ -20,7 +20,7 @@ $body = $doc->getElementById("body");
 
 foreach ($categories as $category) {
 	$appended = $doc->createElement("a", $category["naziv"]);
-	$appended->setAttribute("href", "question.php?id=".$question["ID"]);	
+	$appended->setAttribute("href", "question.php?id=".$category["ID"]);	
 	$body->appendChild($appended);
 	$appended = $doc->createElement("br");
 	$body->appendChild($appended);

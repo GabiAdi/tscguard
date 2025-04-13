@@ -48,9 +48,11 @@ $db = new MySQLDB();
 					<li><a href="admin_dashboard.php">Admin panel</a></li>
 					<hr>
 <?php			} ?>
-					<li><a href="question_browser.php">Lista pitanja</a></li>
+					<li><a href="test_browser.php">Lista testova</a></li>
 					<hr>
 					<li><a href="test.php">Test</a></li>
+					<hr>
+					<li><a href="user_profile.php?id=<?= $_SESSION["user_id"]; ?>">Profil</a></li>
 					<hr>
 					<li><a href="api/logout.php">Logout</a></li>
 					<hr>
@@ -66,10 +68,10 @@ $db = new MySQLDB();
 		<form method="POST" action="api/start_test.php">
 			<section class="categories">
 <?php
-		$categories = $db->query("SELECT ID,naziv FROM tg_kategorije", array());
-		foreach ($categories as $category) {
-			echo "<button class=\"category\" type=\"submit\" name=\"category\" value=\"" . $category["ID"] . "\" id=\"" . $category["ID"] . "\">" . $category["naziv"] . "</button>";
-		}	
+		//$categories = $db->query("SELECT ID,naziv FROM tg_kategorije", array());
+		//foreach ($categories as $category) {
+		//	echo "<button class=\"category\" type=\"submit\" name=\"category\" value=\"" . $category["ID"] . "\" id=\"" . $category["ID"] . "\">" . $category["naziv"] . "</button>";
+		//}	
 					
 ?>			
 			</section>

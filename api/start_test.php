@@ -17,25 +17,24 @@ if($_SERVER["REQUEST_METHOD"] !== "POST") {
 }
 
 
-
 $db = new MySQLDB();
 
-$category = $_POST["category"];
+$test = $_POST["test"];
 
 $now = date("Y-m-d H:i:s");
 $future = date("Y-m-d H:i:s", strtotime("+10 minutes"));
 
-$query = "INSERT INTO tg_test(korisnikID, vrijemePocetka, vremenskoOgranicenje, vrijemeKraja) VALUES (?, ?, ?, ?)";
-$params = array($_SESSION["user_id"], $now, $future, NULL);
+$query = "INSERT INTO tg_testvrijeme(korisnikID, testID, vrijemePocetka, vremenskoOgranicenje, vrijemeKraja) VALUES (?, ?, ?, ?, ?)";
+$params = array($_SESSION["user_id"], $test, $now, $future, NULL);
 
 $id = $db->id_insert($query, $params);
 
 error_log("ID: " . $id);
 
-$_SESSION["test"]["category"] = $category;
+$_SESSION["test"]["test_id"] = $test;
 $_SESSION["test"]["start_time"] = $now;
 $_SESSION["test"]["end_time"] = $future;
-$_SESSION["test"]["test_id"] = $id;
+$_SESSION["test"]["testtime_id"] = $id;
 
 header("Location: /test.php");
 
