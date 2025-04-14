@@ -13,12 +13,15 @@ $result = $db->query($query, $params);
 
 ?>
 
+<script src="public/author_script.js"></script>
 <html>
 	<body>
 		<a href="/index.php">Nazad</a>
-		<h1>Add question</h1>
-		<form action="api/add_question.php" method="post">
-			<label for="question">Question</label>
+		<h1>Napravi test</h1>
+		<button id="add_question_btn" onClick="add_question()">Dodaj pitanje</button>
+		<form id="test_form" action="api/add_test.php" method="post">
+			
+			<!--<label for="question">Question</label>
 			<textarea name="question" type="text" id="question" rows="10" cols="30" required></textarea><br>
 
 			<label for="points">Points</label>
@@ -29,13 +32,15 @@ $result = $db->query($query, $params);
 			
 			<select id="category" name="category" required>
 				<?php
-					foreach ($result as $category) {
-						echo "<option value=" . $category["ID"] . ">" . $category["naziv"] . "</option>";
-					}
+					//foreach ($result as $category) {
+					//	echo "<option value=" . $category["ID"] . ">" . $category["naziv"] . "</option>";
+					//}
 				?>
-			</select>
+			</select>-->
 
-			<input type="submit" value="Submit">
+			<br>
+			<input id="submitBtn" type="submit" value="Submit">
 		</form>
+		<br>
 	</body>
 </html>
