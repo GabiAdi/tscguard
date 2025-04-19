@@ -52,6 +52,20 @@ function add_question() {
 
 	answerNumber.push(0);
 
+	let category = document.createElement("select");
+	category.name = "questions[" + questionNumber + "][category]";
+	category.required = true;
+	
+	let rawData = document.getElementById("categories").textContent;
+	let categories = JSON.parse(rawData);	
+
+	categories.categories.forEach(cat => {
+		let option = document.createElement("option");
+		option.value = cat.id;
+		option.textContent = cat.name;
+		category.append(option);
+	});
+
 	div.append(labelQuestion);
 	div.append(document.createElement("br"));
 	div.append(question);
@@ -66,6 +80,8 @@ function add_question() {
 	div.append(labelPoints);
 	div.append(document.createElement("br"));
 	div.append(points);
+	div.append(document.createElement("br"));
+	div.append(category);
 
 	questionNumber++;
 }
@@ -74,25 +90,25 @@ function add_answer(button) {
 	let id = parseInt(button.id.split("_")[2]);
 
 	let answer = document.createElement("textarea");
-	answer.name = "answers[" + id + "][" + answerNumber[id] + "][text]";
+	answer.name = "questions[" + id + "][answers][" + answerNumber[id] + "][text]";
 	answer.type = "text";
 	answer.required = true;
 
 	let hidden = document.createElement("input");
-	hidden.name = "answers[" + id + "][" + answerNumber[id] + "][correct]";
+	hidden.name = "questions[" + id + "][answers][" + answerNumber[id] + "][correct]";
 	hidden.value = "off";	
 	hidden.type = "hidden";
 	
 	let correct = document.createElement("input");
-	correct.name = "answers[" + id + "][" + answerNumber[id] + "][correct]";
+	correct.name = "questions[" + id + "][answers][" + answerNumber[id] + "][correct]";
 	correct.value = "on";	
 	correct.type = "checkbox";
 
 	let div = document.getElementById("question_"+id); 
 	
 	div.insertBefore(answer, button);
-	div.insertBefore(correct, button);
 	div.insertBefore(hidden, button);
+	div.insertBefore(correct, button);
 	
 	answerNumber[id]++;
 }
