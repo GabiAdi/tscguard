@@ -36,6 +36,7 @@ if(!isset($_POST["questions"])) {
 }
 
 $questions = $_POST["questions"];
+
 foreach ($questions as $question) {
 	$question_text = $question["question"];
 	$question_hint = $question["hint"];
@@ -55,9 +56,10 @@ foreach ($questions as $question) {
 	foreach($question["answers"] as $answer) {
 		$answer_text = $answer["text"];
 		$answer_correct = $answer["correct"] == "on" ? 1 : 0;
+		$answer_explanation = $answer["explanation"];
 		
 		$query = "INSERT INTO tg_odgovori(tekst, pitanjeID, tocno, opisNetocnog, autorID) VALUES (?,?,?,?,?)";
-		$params = array($answer_text, $question_id, $answer_correct, "PROMENITI!!!", $user_id);	
+		$params = array($answer_text, $question_id, $answer_correct, $answer_explanation, $user_id);	
 		
 		$db->query($query, $params);
 	}

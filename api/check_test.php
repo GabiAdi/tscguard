@@ -43,7 +43,7 @@ foreach ($answers as $questionID => $answerID) {
 $now = date("Y-m-d H:i:s");
 
 $query = "UPDATE tg_testvrijeme SET vrijemeKraja = ?, postignutiBodovi = ? WHERE ID = ?";
-$params = array($now, $brojBodova, $_SESSION["test"]["test_id"]);
+$params = array($now, $brojBodova, $_SESSION["test"]["testtime_id"]);
 $db->query($query, $params);
 
 unset($_SESSION["test"]);

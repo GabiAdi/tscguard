@@ -19,17 +19,29 @@ if($_SERVER["REQUEST_METHOD"] !== "POST") {
 
 $db = new MySQLDB();
 
-$test = $_POST["test"];
+$category = $_POST["category"];
+
+$query = "SELECT tg_testovi.ID FROM tg_testovi JOIN tg_testkategorija ON tg_testkategorija.testID = tg_testovi.ID WHERE tg_testkategorija.kategorijaID = ? ORDER BY RAND();";
+$params = array($category);
+
+$result = $db->query($query, $params);
+
+if(empty($result)) {
+	header("/test_browser.php");
+	die();
+}
+
+$testID = $result[0]["ID"];
 
 $now = date("Y-m-d H:i:s");
 $future = date("Y-m-d H:i:s", strtotime("+10 minutes"));
 
 $query = "INSERT INTO tg_testvrijeme(korisnikID, testID, vrijemePocetka, vremenskoOgranicenje, vrijemeKraja) VALUES (?, ?, ?, ?, ?)";
-$params = array($_SESSION["user_id"], $test, $now, $future, NULL);
+$params = array($_SESSION["user_id"], $testID, $now, $future, NULL);
 
 $id = $db->id_insert($query, $params);
 
-$_SESSION["test"]["test_id"] = $test;
+$_SESSION["test"]["test_id"] = $testID;
 $_SESSION["test"]["start_time"] = $now;
 $_SESSION["test"]["end_time"] = $future;
 $_SESSION["test"]["testtime_id"] = $id;

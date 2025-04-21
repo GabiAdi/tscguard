@@ -31,6 +31,7 @@ $lastKey = array_key_last($result);
 }
 </script>
 <html>
+	<link rel="stylesheet" href="/public/author_dasboard.css">
 	<body>
 		<a href="/index.php">Nazad</a>
 		<h1>Napravi test</h1>
@@ -45,25 +46,6 @@ $lastKey = array_key_last($result);
 					}
 				?>
 			</select>
-			<br><br>
-
-			<!--<label for="question">Question</label>
-			<textarea name="question" type="text" id="question" rows="10" cols="30" required></textarea><br>
-
-			<label for="points">Points</label>
-			<input name="points" type="number" id="points" required><br>
-
-			<label for="hint">Hint</label>
-			<textarea name="hint" type="text" id="hint" rows="10" cols="30" required></textarea><br>
-			
-			<select id="category" name="category" required>
-				<?php
-					//foreach ($result as $category) {
-					//	echo "<option value=" . $category["ID"] . ">" . $category["naziv"] . "</option>";
-					//}
-				?>
-			</select>-->
-
 			<br>
 			<input id="submitBtn" type="submit" value="Submit">
 		</form>

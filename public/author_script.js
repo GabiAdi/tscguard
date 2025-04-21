@@ -11,6 +11,7 @@ function add_question() {
 	let div = document.createElement("div");
 	div.id = "question_" + questionNumber;
 	form.insertBefore(div, submit);
+	form.insertBefore(document.createElement("br"), submit);
 
 	let question = document.createElement("textarea");
 	question.name = "questions["+ questionNumber +"][question]";
@@ -21,6 +22,10 @@ function add_question() {
 	let labelQuestion = document.createElement("label");
 	labelQuestion.for = "question_text_"+questionNumber;
 	labelQuestion.textContent = "Pitanje"+questionNumber;
+
+	let answersDiv = document.createElement("div");
+	answersDiv.id = "answers_" + questionNumber;
+	answersDiv.classList.add("answersDiv");
 
 	let newBtn = document.createElement("button");
 	newBtn.id = "answer_btn_" + questionNumber;
@@ -70,9 +75,6 @@ function add_question() {
 	div.append(document.createElement("br"));
 	div.append(question);
 	div.append(document.createElement("br"));
-	div.append(document.createElement("br"));
-	div.append(newBtn);
-	div.append(document.createElement("br"));
 	div.append(labelHint);
 	div.append(document.createElement("br"));
 	div.append(hint);	
@@ -81,19 +83,36 @@ function add_question() {
 	div.append(document.createElement("br"));
 	div.append(points);
 	div.append(document.createElement("br"));
-	div.append(category);
+	div.append(category);	
+	div.append(document.createElement("br"));
+	div.append(newBtn);
+	div.append(document.createElement("br"));
+	div.append(document.createElement("br"));
+	div.append(answersDiv);
 
 	questionNumber++;
 }
 
 function add_answer(button) {
 	let id = parseInt(button.id.split("_")[2]);
+	let answersDiv = document.getElementById("answers_" + id);
 
 	let answer = document.createElement("textarea");
 	answer.name = "questions[" + id + "][answers][" + answerNumber[id] + "][text]";
 	answer.type = "text";
 	answer.required = true;
 
+	let answerLabel = document.createElement("label");
+	answerLabel.textContent = "Odgovor";
+
+	let explanation = document.createElement("input");
+	explanation.name = "questions[" + id + "][answers][" + answerNumber[id] + "][explanation]";
+	explanation.type = "text";
+	explanation.required = true;
+
+	let explanationLabel = document.createElement("label");
+	explanationLabel.textContent = "Objasnjenje";
+	
 	let hidden = document.createElement("input");
 	hidden.name = "questions[" + id + "][answers][" + answerNumber[id] + "][correct]";
 	hidden.value = "off";	
@@ -104,11 +123,22 @@ function add_answer(button) {
 	correct.value = "on";	
 	correct.type = "checkbox";
 
-	let div = document.getElementById("question_"+id); 
+	let correctLabel = document.createElement("label");
+	correctLabel.textContent = "Tocno";
 	
-	div.insertBefore(answer, button);
-	div.insertBefore(hidden, button);
-	div.insertBefore(correct, button);
+	let answerDiv = document.createElement("div");
+	answerDiv.classList.add("answerDiv");
+	
+	//let div = document.getElementById("question_"+id); 
+	
+	answersDiv.append(answerDiv);
+	answerDiv.append(answerLabel);
+	answerDiv.append(answer);
+	answerDiv.append(explanationLabel);
+	answerDiv.append(explanation);
+	answerDiv.append(hidden);
+	answerDiv.append(correctLabel);
+	answerDiv.append(correct);
 	
 	answerNumber[id]++;
 }

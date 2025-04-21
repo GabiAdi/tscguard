@@ -43,6 +43,8 @@ $db = new MySQLDB();
 				if($_SESSION["role"] == "admin" || $_SESSION["role"] == "author") { ?>	
 					<li><a href="author_dashboard.php">Autor dashboard</a></li>
 					<hr>
+					<li><a href="test_list.php">Vasi testovi</a></li>
+					<hr>
 <?php			}
 				if($_SESSION["role"] == "admin") { ?>
 					<li><a href="admin_dashboard.php">Admin panel</a></li>
@@ -65,13 +67,13 @@ $db = new MySQLDB();
             <div class="title">Dobro došli na našu stranicu</div>
             <div class="subtitle">Odaberite kategoriju koju želite odabrati:</div>
 		</header>
-		<form method="POST" action="api/start_test.php">
+		<form method="POST" action="api/start_random_test.php">
 			<section class="categories">
 <?php
-		//$categories = $db->query("SELECT ID,naziv FROM tg_kategorije", array());
-		//foreach ($categories as $category) {
-		//	echo "<button class=\"category\" type=\"submit\" name=\"category\" value=\"" . $category["ID"] . "\" id=\"" . $category["ID"] . "\">" . $category["naziv"] . "</button>";
-		//}	
+		$categories = $db->query("SELECT ID,naziv FROM tg_kategorije", array());
+		foreach ($categories as $category) {
+			echo "<button class=\"category\" type=\"submit\" name=\"category\" value=\"" . $category["ID"] . "\" id=\"" . $category["ID"] . "\">" . $category["naziv"] . "</button>";
+		}	
 					
 ?>			
 			</section>
