@@ -51,7 +51,7 @@ function add_question() {
 	
 	let points = document.createElement("input");
 	points.name = "questions[" + questionNumber + "][points]";
-	points.type = "text";
+	points.type = "number";
 	points.required = true;
 	points.id = "points_"+questionNumber;
 

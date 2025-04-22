@@ -13,9 +13,6 @@ if($_SERVER["REQUEST_METHOD"] !== "POST") {
 
 $db = new MySQLDB();
 
-//echo json_encode($_POST);
-//die();
-
 $test_name = $_POST["test"]["name"];
 $test_category = $_POST["test"]["category"];
 $user_id = $_SESSION["user_id"];
@@ -50,6 +47,11 @@ foreach ($questions as $question) {
 	
 	$query = "INSERT INTO tg_pitanjenatestu(testID, pitanjeID) VALUES (?,?)";
 	$params = array($test_id, $question_id);
+
+	$db->query($query, $params);
+
+	$query = "INSERT INTO tg_kategorija(kategorijaID, pitanjeID) VALUES (?,?)";
+	$params = array($question_category, $question_id);
 
 	$db->query($query, $params);
 

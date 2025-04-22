@@ -31,17 +31,17 @@ if(empty($result)) {
 	die();
 }
 
-$testID = $result[0]["ID"];
+$test_id = $result[0]["ID"];
 
 $now = date("Y-m-d H:i:s");
 $future = date("Y-m-d H:i:s", strtotime("+10 minutes"));
 
 $query = "INSERT INTO tg_testvrijeme(korisnikID, testID, vrijemePocetka, vremenskoOgranicenje, vrijemeKraja) VALUES (?, ?, ?, ?, ?)";
-$params = array($_SESSION["user_id"], $testID, $now, $future, NULL);
+$params = array($_SESSION["user_id"], $test_id, $now, $future, NULL);
 
 $id = $db->id_insert($query, $params);
 
-$_SESSION["test"]["test_id"] = $testID;
+$_SESSION["test"]["test_id"] = $test_id;
 $_SESSION["test"]["start_time"] = $now;
 $_SESSION["test"]["end_time"] = $future;
 $_SESSION["test"]["testtime_id"] = $id;

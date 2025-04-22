@@ -19,8 +19,8 @@ $body = $doc->getElementById("body");
 
 $form = $doc->createElement("form");
 $form->id = "form";
-$form->setAttribute("action", "/api/start_test.php");
-$form->setAttribute("method", "post");
+$form->setAttribute("action", "test_editor.php");
+$form->setAttribute("method", "get");
 $body->appendChild($form);
 
 foreach ($tests as $test) {	
