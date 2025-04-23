@@ -31,6 +31,11 @@ $params = array($test_id);
 
 $result = $db->query($query, $params);
 
+if(empty($result)) {
+	header("Location: /index.php");
+	die("Invalid test");
+}
+
 if($result[0]["korisnikID"] != $_SESSION["user_id"]) {
 	header("Location: /index.php");
 	die("You do not own this test");
@@ -63,6 +68,16 @@ foreach ($questions as $question) {
 	$question_hint = $question["hint"];
 	$question_points = $question["points"];
 	$question_category = $question["category"];
+	
+	$query = "SELECT korisnikID FROM tg_pitanje WHERE ID = ?";
+	$params = array($question_id);
+
+	$result = $db->query($query, $params);
+
+	if($result[0]["korisnikID"] != $user_id) {
+		header("Location: /index.php");
+		die("Invalid question");
+	}
 
 	$query = "UPDATE tg_pitanje SET tekstPitanje = ?, brojBodova = ?, hint = ? WHERE ID = ?";
 	$params = array($question_text, $question_points, $question_hint, $question_id);
@@ -79,6 +94,16 @@ foreach ($questions as $question) {
 		$answer_text = $answer["text"];
 		$answer_correct = $answer["correct"] == "on" ? 1 : 0;
 		$answer_explanation = $answer["explanation"];
+
+		$query = "SELECT autorID FROM tg_odgovori WHERE ID = ?";
+		$params = array($answer_id);
+
+		$result = $db->query($query, $params);
+
+		if($result[0]["autorID"] != $user_id) {
+			header("Location: /index.php");
+			die("Invalid question");
+		}
 
 		$query = "UPDATE tg_odgovori SET tekst = ?, tocno = ?, opisNetocnog = ? WHERE ID = ?";
 		$params = array($answer_text, $answer_correct, $answer_explanation, $answer_id);	

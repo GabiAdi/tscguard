@@ -1,10 +1,16 @@
 <?php
+include_once "includes/connection.php";
 session_start();
 
 if($_SESSION["role"] != "admin") { // Redirekcija ako korisnik nije admin
 	header("Location: /index.php");
 	die();
 }
+
+$db = new MySQLDB();
+
+$roles = $db->query("SELECT ID,opis FROM tg_pravo", array());
+
 ?>
 
 <html>
@@ -16,10 +22,18 @@ if($_SESSION["role"] != "admin") { // Redirekcija ako korisnik nije admin
 			<input name="username" type="text" id="username" required><br>
 			<label for="role">Role</label>
 			<select id="role" name="role" required>
-				<option value="user">Korisnik</option>
-				<option value="author">Autor</option>
-				<option value="admin">Admin</option>
+			<?php
+				foreach ($roles as $role) {
+					echo "<option value=\"" . $role["ID"] . "\">" . $role["opis"] . "</option>";
+				}
+			?>
 			</select>
+			<input type="submit" value="Submit">
+		</form>
+		<h1>Add category</h1>
+		<form action="api/add_category.php" method="post">
+			<label for="category">Category name</label>
+			<input name="category" type="text" id="category" required><br>
 			<input type="submit" value="Submit">
 		</form>
 	</body>

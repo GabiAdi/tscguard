@@ -109,16 +109,6 @@ class MySQLDB // Klasa za spajanje na MySQL bazu
 		return false;
 	}
 
-	function add_role($username, $role) {	
-		$query = "UPDATE tg_prava JOIN tg_korisnik ON tg_prava.korisnikID = tg_korisnik.ID JOIN tg_pravo ON tg_prava.pravoID = tg_pravo.ID SET tg_prava.pravoID = (SELECT ID FROM tg_pravo WHERE opis=?) WHERE tg_korisnik.kime = ?;"; 
-		$params = array($role, $username); // Postavlja prava korisnika na admin
-	
-		if($this->query($query, $params) == 1) {
-			return true;
-		}
-		return false;	
-	}
-
 	function id_insert($query, $params) {	
 		$db = $this->get_db();	
 		
