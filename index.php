@@ -52,8 +52,10 @@ $db = new MySQLDB();
 <?php			} ?>
 					<li><a href="test_browser.php">Lista testova</a></li>
 					<hr>
+<?php			if(isset($_SESSION["test"])) { ?>
 					<li><a href="test.php">Test</a></li>
 					<hr>
+<?php			}?>
 					<li><a href="user_profile.php?id=<?= $_SESSION["user_id"]; ?>">Profil</a></li>
 					<hr>
 					<li><a href="api/logout.php">Logout</a></li>

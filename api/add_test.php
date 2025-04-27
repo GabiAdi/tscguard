@@ -11,6 +11,20 @@ if($_SERVER["REQUEST_METHOD"] !== "POST") {
 	die("Invalid request");
 }
 
+if(!isset($_POST["questions"]) || empty($_POST["questions"])) {
+	header("Location: /author_dashboard.php");
+	die("No questions!");
+}
+
+$questions = $_POST["questions"];
+
+foreach ($questions as $question) {
+	if(!isset($question["answers"]) || empty($question["answers"])) {
+		header("Location: /author_dashboard.php");
+		die("No answers!");
+	}
+}
+
 $db = new MySQLDB();
 
 $test_name = $_POST["test"]["name"];
@@ -26,13 +40,6 @@ $query = "INSERT INTO tg_testkategorija(testID, kategorijaID) VALUES (?,?)";
 $params = array($test_id, $test_category);
 
 $db->query($query, $params);
-
-if(!isset($_POST["questions"])) {
-	header("Location: /author_dashboard.php");
-	die("No questions!");
-}
-
-$questions = $_POST["questions"];
 
 foreach ($questions as $question) {
 	$question_text = $question["question"];
