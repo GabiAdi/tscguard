@@ -46,6 +46,10 @@ $query = "UPDATE tg_testvrijeme SET vrijemeKraja = ?, postignutiBodovi = ? WHERE
 $params = array($now, $brojBodova, $_SESSION["test"]["testtime_id"]);
 $db->query($query, $params);
 
+$query = "UPDATE tg_korisnik k JOIN ( SELECT korisnikID, SUM(maxBodovi) AS ukupniBodovi FROM ( SELECT korisnikID, testID, MAX(postignutiBodovi) AS maxBodovi FROM tg_testvrijeme GROUP BY korisnikID, testID ) AS najbolji GROUP BY korisnikID ) AS ukupno ON k.ID = ukupno.korisnikID SET k.bodovi = ukupno.ukupniBodovi WHERE k.ID = ?; ";
+$params = array($_SESSION["user_id"]);
+$db->query($query, $params);
+
 unset($_SESSION["test"]);
 
 header("Location: /rjesenja.php");

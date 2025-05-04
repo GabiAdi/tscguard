@@ -36,5 +36,9 @@ $roles = $db->query("SELECT ID,opis FROM tg_pravo", array());
 			<input name="category" type="text" id="category" required><br>
 			<input type="submit" value="Submit">
 		</form>
+		<form action="api/refresh_leaderboard.php">
+			<label for="refresh">Refresh leaderboard</label>
+			<input type="submit" id="refresh">
+		</form>
 	</body>
 </html>

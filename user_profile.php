@@ -43,8 +43,9 @@ if (!$user) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
 </head>
-<body>
-    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center;">
+<body>	
+	<a href="/index.php">Nazad</a>
+	<div style="display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center;">
         <div>
             <h2>User Profile</h2>
             <p><strong>Username:</strong> <?= htmlspecialchars($user['username']) ?></p>

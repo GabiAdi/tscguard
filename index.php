@@ -24,6 +24,8 @@ $db = new MySQLDB();
         <ul id="nav-menu" class="nav-menu">
             
             <li class="prvi"><a href="index.php">Home</a></li>
+            <li><a href="leaderboard.php">Ljestvica</a></li> 
+            <li><a href="about.php">O nama</a></li>
             
 <?php
 			if(!isset($_SESSION["user_id"])) { ?>
@@ -45,8 +47,6 @@ $db = new MySQLDB();
 					<li><a href="user_profile.php?id=<?= $_SESSION["user_id"]; ?>">Profil</a></li>
 					<li><a href="api/logout.php">Logout</a></li>
 <?php		} ?>
-            <li><a href="leaderboard.php">Ljestvica</a></li> 
-            <li><a href="about.php">O nama</a></li>
         </ul>
     </nav>
 

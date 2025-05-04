@@ -1,7 +1,4 @@
 <?php
-
-use function pcov\waiting;
-
 session_start();
 include_once "../includes/connection.php";
 
@@ -18,9 +15,6 @@ if(!isset($_SESSION["test_edit"])) {
 	header("Location: /index.php");
 	die();
 }
-
-//unset($_SESSION["test_edit"]);
-//die("test_edit cleared");
 
 $test_id = $_POST["test"]["id"];
 
