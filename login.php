@@ -7,11 +7,12 @@ if(isset($_SESSION["username"])) {
 }	
 ?>
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="public/style.css">
+    <link rel="stylesheet" href="public/login.css">
     <title>TSCGuard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,10 +23,13 @@ if(isset($_SESSION["username"])) {
     <div class="header">
         <img class="logo" src="logo.png">
         <div class="block">
+            <a class="block_text" href="home.html">Home</a>
+        </div>
+        <div class="block">
             <a class="block_text" href="about.html">O nama</a>
         </div>
         <div class="block">
-            <a class="block_text" href="nekaj.html">Nekaj</a>
+            <a class="block_text" href="leaderboard.html">Leaderboard</a>
         </div>
     </div>
     <div class="mid">
@@ -36,25 +40,25 @@ if(isset($_SESSION["username"])) {
             <div class="outer_login"><button class="login" onclick="openLoginForm()">Login</button></div>
         </div>
         <div class="form" id="form_register">
-            <form method="POST" action="/api/create_user.php" class="form_container">
+            <form action="/api/create_user.php" class="form_container" method="post">
                 <h1>Register</h1>
-                <label for="username"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="username" required>
-                <label for="email"><b>Email</b></label>
-                <input type="text" placeholder="Enter Email" name="email" required>
-                <label for="passwd"><b>Password</b> </label>
-                <input type="password" placeholder="Enter Password" name="password" required>
+                <label for="username" class="input_label"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="username" required class="input_field"> <br>
+                <label for="email" class="input_label"><b>Email</b></label>
+                <input type="text" placeholder="Enter Email" name="email" required class="input_field"> <br>
+                <label for="passwd" class="input_label"><b>Password</b> </label>
+                <input type="password" placeholder="Enter Password" name="password" required class="input_field"> <br>
                 <button type="submit" class="button_submit">Register</button>
                 <button type="cancel" class="button_cancel" onclick="closeForm()">Close</button>
             </form>
         </div>
         <div class="form" id="form_login">
-            <form method="POST" action="/api/login_user.php" class="form_container">
+            <form action="/api/login_user.php" class="form_container" method="post">
                 <h1>Login</h1>
-                <label for="email"><b>Email</b></label>
-                <input type="text" placeholder="Enter Email" name="email" required>
-                <label for="passwd"><b>Password</b> </label>
-                <input type="password" placeholder="Enter Password" name="password" required>
+                <label for="email" class="input_label"><b>Email</b></label>
+                <input type="text" placeholder="Enter Email" name="email" required class="input_field"> <br>
+                <label for="passwd" class="input_label"><b>Password</b> </label>
+                <input type="password" placeholder="Enter Password" name="password" required class="input_field"> <br>
                 <button type="submit" class="button_submit">Login</button>
                 <button type="cancel" class="button_cancel" onclick="closeForm()">Close</button>
             </form>
@@ -95,3 +99,4 @@ if(isset($_SESSION["username"])) {
     </script>
 </body>
 </html>
+
