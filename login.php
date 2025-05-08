@@ -12,7 +12,7 @@ if(isset($_SESSION["username"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="public/login.css">
+    <link rel="stylesheet" href="login.css">
     <title>TSCGuard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,25 +40,25 @@ if(isset($_SESSION["username"])) {
             <div class="outer_login"><button class="login" onclick="openLoginForm()">Login</button></div>
         </div>
         <div class="form" id="form_register">
-            <form action="/api/create_user.php" class="form_container" method="post">
+            <form action="/register.php" class="form_container">
                 <h1>Register</h1>
                 <label for="username" class="input_label"><b>Username</b></label>
                 <input type="text" placeholder="Enter Username" name="username" required class="input_field"> <br>
                 <label for="email" class="input_label"><b>Email</b></label>
                 <input type="text" placeholder="Enter Email" name="email" required class="input_field"> <br>
                 <label for="passwd" class="input_label"><b>Password</b> </label>
-                <input type="password" placeholder="Enter Password" name="password" required class="input_field"> <br>
+                <input type="password" placeholder="Enter Password" name="passwd" required class="input_field"> <br>
                 <button type="submit" class="button_submit">Register</button>
                 <button type="cancel" class="button_cancel" onclick="closeForm()">Close</button>
             </form>
         </div>
         <div class="form" id="form_login">
-            <form action="/api/login_user.php" class="form_container" method="post">
+            <form action="/login.php" class="form_container">
                 <h1>Login</h1>
                 <label for="email" class="input_label"><b>Email</b></label>
                 <input type="text" placeholder="Enter Email" name="email" required class="input_field"> <br>
                 <label for="passwd" class="input_label"><b>Password</b> </label>
-                <input type="password" placeholder="Enter Password" name="password" required class="input_field"> <br>
+                <input type="password" placeholder="Enter Password" name="passwd" required class="input_field"> <br>
                 <button type="submit" class="button_submit">Login</button>
                 <button type="cancel" class="button_cancel" onclick="closeForm()">Close</button>
             </form>
