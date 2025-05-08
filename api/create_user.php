@@ -21,7 +21,7 @@ $hash = password_hash($password, PASSWORD_BCRYPT);
 if($db->create_user($email, $username, $hash)) { // Stavljamo hashani password u bazu
 	header("Location: /index.php");	
 } else {
-	header("Location: /register.php?failed=true");
+	header("Location: /login.php");
 }
 
 ?>

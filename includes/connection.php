@@ -109,57 +109,28 @@ class MySQLDB // Klasa za spajanje na MySQL bazu
 		return false;
 	}
 
-	function add_role($username, $role) {	
-		$query = "UPDATE tg_prava JOIN tg_korisnik ON tg_prava.korisnikID = tg_korisnik.ID JOIN tg_pravo ON tg_prava.pravoID = tg_pravo.ID SET tg_prava.pravoID = (SELECT ID FROM tg_pravo WHERE opis=?) WHERE tg_korisnik.kime = ?;"; 
-		$params = array($role, $username); // Postavlja prava korisnika na admin
-	
-		if($this->query($query, $params) == 1) {
-			return true;
-		}
-		return false;	
-	}
-
-	function add_question($username, $text, $points, $hint, $category) {
-		$query = "SELECT * FROM tg_pitanje WHERE tekstPitanje = ?";
-		$params = array($text);
-
-		if($this->query($query, $params)) {
-			return false;
-		}
-
-		$query = "INSERT INTO tg_pitanje (korisnikID, tekstPitanje, brojBodova, hint, brojPonudenih) SELECT tg_korisnik.ID, ?, ?, ?, ? FROM tg_korisnik WHERE tg_korisnik.kime = ?;"; 	
-		$paramas = array($text, $points, $hint, "0", $username);
-
-		if($this->query($query, $paramas) != 1) {
-			return false;
-		}
-
-		$query = "INSERT INTO tg_kategorija (kategorijaID, pitanjeID) SELECT ?, tg_pitanje.ID FROM tg_pitanje WHERE tg_pitanje.tekstPitanje = ?"; ;
-		$params = array($category, $text);
-		if($this->query($query, $params) != 1) {
-			return false;
-		}
-		return true;
-	}
-
-	function add_answer($id, $user_id, $answer, $correct, $explanation) {
-		$query = "SELECT * FROM tg_pitanje WHERE ID = ?";
-		$params = array($id);
-
-		$result = $this->query($query, $params);
-
-		if(!$result) {
-			return false;
-		}
+	function id_insert($query, $params) {	
+		$db = $this->get_db();	
 		
-		$query = "INSERT INTO tg_odgovori(pitanjeID, tekst, tocno, opisNetocnog, autorID) VALUES (?, ?, ?, ?, ?);";
-		$params = array($id, $answer, $correct, $explanation, $user_id);
+		try {
+			$stmt = $db->prepare($query); // Priprema upit 
+			if ($stmt === false) {
+                throw new Exception("Prepare failed: " . $db->error);
+			}
 
-		if($this->query($query, $params)) {
-			$query = "UPDATE tg_pitanje SET brojPonudenih = brojPonudenih + 1 WHERE ID = ?";
-			$params = array($id);
-			$this->query($query, $params);
-			return true;
+			if (!empty($params)) {
+                $types = str_repeat('s', count($params)); 
+                $stmt->bind_param($types, ...$params);
+			}
+
+			$stmt->execute(); // Izvrsava upit s parametrima (Mijenja ? s parametrom)
+				
+			return $db->insert_id;
+			
+		} catch (Exception $e) {	
+			error_log($e->getMessage());
+			echo "Something went wrong, please try again later.";
+			return false;
 		}
 		return false;
 	}

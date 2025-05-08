@@ -1,10 +1,24 @@
 <!DOCTYPE html>
+<?php
+session_start();
+include_once "includes/connection.php";
+
+$db = new MySQLDB();
+
+$query = "SELECT kime,bodovi FROM tg_korisnik WHERE bodovi > 0 LIMIT 100";
+$params = array();
+
+$results = $db->query($query, $params);
+
+?>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaderboard</title>
-    <link rel="stylesheet" href="public/tscguard_leaderboard.css">
+    <link rel="stylesheet" href="public/leaderboard.css">
 </head>
 <body>
 
@@ -17,27 +31,32 @@
         </div>
         <ul id="nav-menu" class="nav-menu">
             
-            <li><a href="homepage.html">Home</a></li>
+            <li class="prvi"><a href="index.php">Home</a></li>
+            <li><a href="leaderboard.php">Ljestvica</a></li> 
+            <li><a href="about.php">O nama</a></li>
             
-            <li><a href="#">Prijava</a></li>
-            
-            <li><a href="#">Registracija</a></li>
-            
-            <li><a href="#">Lista ispita</a></li>
-            
-            <li><a href="#">Rješenja</a></li>
-            
-            <li><a href="tscguard_leaderboard.html">Ljestvica</a></li>
-            
-            <li><a href="#">Profile viewer</a></li>
-            
-            <li><a href="#">Admin panel</a></li>
-            
-            <li><a href="#">O nama</a></li>
-            
+<?php
+			if(!isset($_SESSION["user_id"])) { ?>
+				<li><a href="login.php">Prijava</a></li>
+				<li><a href="login.php">Registracija</a></li>
+<?php		} 
+			if(isset($_SESSION["user_id"])) {
+				if($_SESSION["role"] == "admin" || $_SESSION["role"] == "author") { ?>	
+					<li><a href="author_dashboard.php">Autor dashboard</a></li>
+					<li><a href="test_list.php">Vasi testovi</a></li>
+<?php			}
+				if($_SESSION["role"] == "admin") { ?>
+					<li><a href="admin_dashboard.php">Admin panel</a></li>
+<?php			} ?>
+					<li><a href="test_browser.php">Lista testova</a></li>
+<?php			if(isset($_SESSION["test"])) { ?>
+					<li><a href="test.php">Test</a></li>
+<?php			}?>
+					<li><a href="user_profile.php?id=<?= $_SESSION["user_id"]; ?>">Profil</a></li>
+					<li><a href="api/logout.php">Logout</a></li>
+<?php		} ?>
         </ul>
     </nav>
-
     <!-- Leaderboard Container -->
     <div class="container">
         <h1>Leaderboard</h1>
@@ -53,35 +72,36 @@
                         <th>Rank</th>
                         <th>Player</th>
                         <th>Score</th>
-                        <th>Time</th>
+                        <!--<th>Time</th>-->
                     </tr>
                 </thead>
                 <tbody id="leaderboardBody">
                     <!-- Player data rows (rank will be automatically set in JS) -->
-                    <tr>
+                    <!--<tr>
                         <td></td>
                         <td>Karlo</td>
                         <td>200</td>
-                        <td>02:15</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>Maks</td>
                         <td>150</td>
-                        <td>02:30</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>Gork</td>
                         <td>10</td>
-                        <td>02:20</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>Luka</td>
                         <td>200</td>
-                        <td>02:10</td>
-                    </tr>
+</tr>-->
+<?php 
+				foreach ($results as $result) {
+					echo "<tr><td></td>\n<td>" . $result["kime"] . "</td>\n<td>" . $result["bodovi"] . "</td></tr>";  
+				}	
+?>
                     <!-- More rows can be added as needed -->
                 </tbody>
             </table>
@@ -144,14 +164,16 @@
             rows.sort((a, b) => {
                 const scoreA = parseInt(a.cells[2].innerText);
                 const scoreB = parseInt(b.cells[2].innerText);
-                const timeA = timeToSeconds(a.cells[3].innerText);
-                const timeB = timeToSeconds(b.cells[3].innerText);
+                //const timeA = timeToSeconds(a.cells[3].innerText);
+                //const timeB = timeToSeconds(b.cells[3].innerText);
 
-                if (scoreB !== scoreA) {
-                    return scoreB - scoreA; // Sort by score (descending)
-                } else {
-                    return timeA - timeB; // If scores are the same, sort by time (ascending)
-                }
+				return scoreB - scoreA;
+
+                //if (scoreB !== scoreA) {
+                //    return scoreB - scoreA; // Sort by score (descending)
+                //} else {
+                //    return timeA - timeB; // If scores are the same, sort by time (ascending)
+                //}
             });
 
             // Reorder the rows in the table
@@ -187,3 +209,4 @@
     </script>
 </body>
 </html>
+

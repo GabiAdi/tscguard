@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 08, 2025 at 07:08 PM
+-- Generation Time: May 04, 2025 at 07:03 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -54,9 +54,10 @@ CREATE TABLE `tg_korisnik` (
   `ID` int(11) NOT NULL,
   `kime` varchar(20) NOT NULL,
   `lozinka` varchar(255) NOT NULL,
-  `razinaID` int(11) NOT NULL,
+  `razinaID` int(11) NOT NULL DEFAULT 1,
   `aktivan` tinyint(1) NOT NULL DEFAULT 1,
-  `email` varchar(255) NOT NULL
+  `email` varchar(255) NOT NULL,
+  `bodovi` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -86,7 +87,7 @@ CREATE TABLE `tg_pitanje` (
   `korisnikID` int(11) NOT NULL,
   `brojBodova` int(11) NOT NULL,
   `hint` varchar(1023) NOT NULL,
-  `brojPonudenih` int(11) NOT NULL
+  `brojPonudenih` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -97,10 +98,8 @@ CREATE TABLE `tg_pitanje` (
 
 CREATE TABLE `tg_pitanjenatestu` (
   `ID` int(11) NOT NULL,
-  `tekstID` int(11) NOT NULL,
-  `pitanjeID` int(11) NOT NULL,
-  `odgovorID` int(11) NOT NULL,
-  `odabarano` tinyint(1) NOT NULL
+  `testID` int(11) NOT NULL,
+  `pitanjeID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -140,15 +139,41 @@ CREATE TABLE `tg_razine` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tg_tekst`
+-- Table structure for table `tg_testkategorija`
 --
 
-CREATE TABLE `tg_tekst` (
+CREATE TABLE `tg_testkategorija` (
+  `ID` int(11) NOT NULL,
+  `testID` int(11) NOT NULL,
+  `kategorijaID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tg_testovi`
+--
+
+CREATE TABLE `tg_testovi` (
+  `ID` int(11) NOT NULL,
+  `testIme` varchar(50) NOT NULL,
+  `korisnikID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tg_testvrijeme`
+--
+
+CREATE TABLE `tg_testvrijeme` (
   `ID` int(11) NOT NULL,
   `korisnikID` int(11) NOT NULL,
+  `testID` int(11) NOT NULL,
   `vrijemePocetka` timestamp NOT NULL DEFAULT current_timestamp(),
   `vremenskoOgranicenje` timestamp NOT NULL DEFAULT current_timestamp(),
-  `vrijemeKraja` timestamp NOT NULL DEFAULT current_timestamp()
+  `vrijemeKraja` timestamp NOT NULL DEFAULT current_timestamp(),
+  `postignutiBodovi` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -196,9 +221,8 @@ ALTER TABLE `tg_pitanje`
 --
 ALTER TABLE `tg_pitanjenatestu`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `tekstID` (`tekstID`),
   ADD KEY `pitanjeID` (`pitanjeID`),
-  ADD KEY `odgovorID` (`odgovorID`);
+  ADD KEY `testID` (`testID`) USING BTREE;
 
 --
 -- Indexes for table `tg_prava`
@@ -221,11 +245,27 @@ ALTER TABLE `tg_razine`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indexes for table `tg_tekst`
+-- Indexes for table `tg_testkategorija`
 --
-ALTER TABLE `tg_tekst`
+ALTER TABLE `tg_testkategorija`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `testID` (`testID`),
+  ADD KEY `kategorijaID` (`kategorijaID`);
+
+--
+-- Indexes for table `tg_testovi`
+--
+ALTER TABLE `tg_testovi`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `korisnikID` (`korisnikID`);
+
+--
+-- Indexes for table `tg_testvrijeme`
+--
+ALTER TABLE `tg_testvrijeme`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `korisnikID` (`korisnikID`),
+  ADD KEY `testID` (`testID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -286,9 +326,21 @@ ALTER TABLE `tg_razine`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `tg_tekst`
+-- AUTO_INCREMENT for table `tg_testkategorija`
 --
-ALTER TABLE `tg_tekst`
+ALTER TABLE `tg_testkategorija`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tg_testovi`
+--
+ALTER TABLE `tg_testovi`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tg_testvrijeme`
+--
+ALTER TABLE `tg_testvrijeme`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -326,8 +378,7 @@ ALTER TABLE `tg_pitanje`
 --
 ALTER TABLE `tg_pitanjenatestu`
   ADD CONSTRAINT `tg_pitanjenatestu_ibfk_1` FOREIGN KEY (`pitanjeID`) REFERENCES `tg_pitanje` (`ID`),
-  ADD CONSTRAINT `tg_pitanjenatestu_ibfk_2` FOREIGN KEY (`tekstID`) REFERENCES `tg_tekst` (`ID`),
-  ADD CONSTRAINT `tg_pitanjenatestu_ibfk_3` FOREIGN KEY (`odgovorID`) REFERENCES `tg_odgovori` (`ID`);
+  ADD CONSTRAINT `tg_pitanjenatestu_ibfk_4` FOREIGN KEY (`testID`) REFERENCES `tg_testovi` (`ID`);
 
 --
 -- Constraints for table `tg_prava`
@@ -337,10 +388,24 @@ ALTER TABLE `tg_prava`
   ADD CONSTRAINT `tg_prava_ibfk_2` FOREIGN KEY (`pravoID`) REFERENCES `tg_pravo` (`ID`);
 
 --
--- Constraints for table `tg_tekst`
+-- Constraints for table `tg_testkategorija`
 --
-ALTER TABLE `tg_tekst`
-  ADD CONSTRAINT `tg_tekst_ibfk_1` FOREIGN KEY (`korisnikID`) REFERENCES `tg_korisnik` (`ID`);
+ALTER TABLE `tg_testkategorija`
+  ADD CONSTRAINT `tg_testkategorija_ibfk_1` FOREIGN KEY (`testID`) REFERENCES `tg_testovi` (`ID`),
+  ADD CONSTRAINT `tg_testkategorija_ibfk_2` FOREIGN KEY (`kategorijaID`) REFERENCES `tg_kategorije` (`ID`);
+
+--
+-- Constraints for table `tg_testovi`
+--
+ALTER TABLE `tg_testovi`
+  ADD CONSTRAINT `tg_testovi_ibfk_1` FOREIGN KEY (`korisnikID`) REFERENCES `tg_korisnik` (`ID`);
+
+--
+-- Constraints for table `tg_testvrijeme`
+--
+ALTER TABLE `tg_testvrijeme`
+  ADD CONSTRAINT `tg_testvrijeme_ibfk_1` FOREIGN KEY (`korisnikID`) REFERENCES `tg_korisnik` (`ID`),
+  ADD CONSTRAINT `tg_testvrijeme_ibfk_2` FOREIGN KEY (`testID`) REFERENCES `tg_testovi` (`ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

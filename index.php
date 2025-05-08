@@ -1,5 +1,10 @@
+<!DOCTYPE html>
 <?php
 session_start();
+include_once "includes/connection.php";
+
+$db = new MySQLDB();
+
 ?>
 <html lang="en">
 <head>
@@ -17,56 +22,33 @@ session_start();
             <div class="line"></div>
         </div>
         <ul id="nav-menu" class="nav-menu">
+            
+            <li class="prvi"><a href="index.php">Home</a></li>
+            <li><a href="leaderboard.php">Ljestvica</a></li> 
+            <li><a href="about.php">O nama</a></li>
+            
 <?php
 			if(!isset($_SESSION["user_id"])) { ?>
-				<hr>
 				<li><a href="login.php">Prijava</a></li>
-								
-				<hr>
 				<li><a href="login.php">Registracija</a></li>
-<?php		} ?>
-			<hr>
-			<li><a href="index.php">Home</a></li>
-            <hr>
-            <!--<li><a href="#">Rješenja</a></li>
-            <hr>-->
-            <!--<li><a href="tscguard_leaderboard.php">Ljestvica</a></li>
-<hr>-->
-            <li><a href="#">O nama</a></li>
-            <hr>
-<?php
-			if($_SESSION["role"] == "admin" || $_SESSION["role"] == "author") { ?>	
-				<li><a href="author_dashboard.php">Autor dashboard</a></li>
-				<hr>
-<?php		}
-			if($_SESSION["role"] == "admin") { ?>
-				<li><a href="admin_dashboard.php">Admin panel</a></li>
-				<hr>
 <?php		} 
-			if(isset($_SESSION["user_id"])) { ?>	
-				<li><a href="question_browser.php">Lista pitanja</a></li>
-				<hr>
-				<li><a href="test.php">Test</a></li>
-				<hr>
-				<li><a href="api/logout.php">Logout</a></li>
-				<hr>
+			if(isset($_SESSION["user_id"])) {
+				if($_SESSION["role"] == "admin" || $_SESSION["role"] == "author") { ?>	
+					<li><a href="author_dashboard.php">Autor dashboard</a></li>
+					<li><a href="test_list.php">Vasi testovi</a></li>
+<?php			}
+				if($_SESSION["role"] == "admin") { ?>
+					<li><a href="admin_dashboard.php">Admin panel</a></li>
+<?php			} ?>
+					<li><a href="test_browser.php">Lista testova</a></li>
+<?php			if(isset($_SESSION["test"])) { ?>
+					<li><a href="test.php">Test</a></li>
+<?php			}?>
+					<li><a href="user_profile.php?id=<?= $_SESSION["user_id"]; ?>">Profil</a></li>
+					<li><a href="api/logout.php">Logout</a></li>
 <?php		} ?>
         </ul>
     </nav>
-
-    <div class="container">
-        <header class="header">
-            <div class="title">Dobro došli na našu stranicu</div>
-            <div class="subtitle">Odaberite kategoriju koju želite odabrati:</div>
-        </header>
-
-        <section class="categories">
-            <div class="category">Prva kategorija</div>
-            <div class="category">Druga kategorija</div>
-            <div class="category">Treća kategorija</div>
-            <div class="category">Četvrta kategorija</div>
-        </section>
-    </div>
 
     <script>
         function toggleMenu() 
@@ -87,3 +69,4 @@ session_start();
     </script>
 </body>
 </html>
+

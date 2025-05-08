@@ -11,6 +11,11 @@ if($_SERVER["REQUEST_METHOD"] !== "POST") {
 	die("Invalid request");
 }
 
+if(empty($_SESSION["test"])) {
+	header("Location: /index.php");
+	die();
+}
+
 if(empty($_POST["answers"])) {
 	header("Location: /test.php");
 	die("Answer all quesitons!");
@@ -20,6 +25,7 @@ $db = new MySQLDB();
 
 $answers = $_POST["answers"];
 $_SESSION["answers"] = [];
+$brojBodova = 0;
 
 foreach ($answers as $questionID => $answerID) {
 	$query = "SELECT tocno,tg_pitanje.brojBodova FROM tg_odgovori JOIN tg_pitanje ON tg_pitanje.ID = pitanjeID WHERE pitanjeID = ? AND tg_odgovori.ID = ?;";
@@ -31,7 +37,20 @@ foreach ($answers as $questionID => $answerID) {
 		"answerID" => $answerID,
 		"questionID" => $questionID
 	];
+	$brojBodova += $result[0]["tocno"] == 1 ? $result[0]["brojBodova"] : 0;
 }
+
+$now = date("Y-m-d H:i:s");
+
+$query = "UPDATE tg_testvrijeme SET vrijemeKraja = ?, postignutiBodovi = ? WHERE ID = ?";
+$params = array($now, $brojBodova, $_SESSION["test"]["testtime_id"]);
+$db->query($query, $params);
+
+$query = "UPDATE tg_korisnik k JOIN ( SELECT korisnikID, SUM(maxBodovi) AS ukupniBodovi FROM ( SELECT korisnikID, testID, MAX(postignutiBodovi) AS maxBodovi FROM tg_testvrijeme GROUP BY korisnikID, testID ) AS najbolji GROUP BY korisnikID ) AS ukupno ON k.ID = ukupno.korisnikID SET k.bodovi = ukupno.ukupniBodovi WHERE k.ID = ?; ";
+$params = array($_SESSION["user_id"]);
+$db->query($query, $params);
+
+unset($_SESSION["test"]);
 
 header("Location: /rjesenja.php");
 ?>
