@@ -76,6 +76,7 @@ $form->appendChild($appended);
 $appended = $doc->createElement("br");
 $body->appendChild($appended);
 
+echo "<link rel=\"stylesheet\" href=\"public/test.css\">";
 echo "<a href=\"/index.php\">Nazad</a><br><br>";
 echo "<p>Start: " . $_SESSION["test"]["start_time"] . "</p>";
 echo "<p>End: " . $_SESSION["test"]["end_time"] . "</p>";

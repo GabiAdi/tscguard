@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 session_start();
 include_once "includes/connection.php";
@@ -6,6 +5,7 @@ include_once "includes/connection.php";
 $db = new MySQLDB();
 
 ?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
