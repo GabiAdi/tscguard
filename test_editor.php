@@ -50,7 +50,7 @@ $doc->loadHTML($html);
 $body = $doc->getElementById("body");
 
 $form = $doc->createElement("form");
-$form->id = "form";
+$form->setAttribute("id", "form");
 $form->setAttribute("action", "/api/update_test.php");
 $form->setAttribute("method", "post");
 $body->appendChild($form);
@@ -87,50 +87,75 @@ foreach ($categories as $category) {
 }
 
 $form->appendChild($doc->createElement("br"));	
+$button = $doc->createElement("button", "Dodaj pitanje");
+$button->setAttribute("onClick", "add_question()");
+$button->setAttribute("type", "button");
+$button->setAttribute("id", "add_question_button");
+$form->appendChild($button);
+
+$button = $doc->createElement("button", "Makni pitanje");
+$button->setAttribute("onClick", "remove_question()");
+$button->setAttribute("type", "button");
+$button->setAttribute("id", "remove_question_button");
+$form->appendChild($button);
+
 $form->appendChild($doc->createElement("br"));	
 
 $questionCounter = 0;
 
 foreach ($result as $question) {
+	$question_div = $doc->createElement("div");
+	$question_div->setAttribute("id", "div_" . $questionCounter);
+	$question_div->setAttribute("class", "question_div");
+
+	$question_div->appendChild($doc->createElement("br"));
+
 	// Skriveni
 	$hidden = $doc->createElement("input");
 	$hidden->setAttribute("type", "hidden");
 	$hidden->setAttribute("name", "questions[" . $questionCounter . "][question_id]");
 	$hidden->setAttribute("value", $question["questionID"]);
-	$form->appendChild($hidden);
+	$question_div->appendChild($hidden);
 	
+	// Delete
+	$hidden = $doc->createElement("input");
+	$hidden->setAttribute("type", "hidden");
+	$hidden->setAttribute("name", "questions[" . $questionCounter . "][delete]");
+	$hidden->setAttribute("value", "0");
+	$question_div->appendChild($hidden);
+
 	// Pitanje
 	$label = $doc->createElement("label", "Pitanje");
-	$form->appendChild($label);
-	$form->appendChild($doc->createElement("br"));	
+	$question_div->appendChild($label);
+	$question_div->appendChild($doc->createElement("br"));	
 	$textArea = $doc->createElement("textArea", $question["tekstPitanje"]);
 	$textArea->setAttribute("name", "questions[" . $questionCounter . "][question]");
-	$form->appendChild($textArea);
-	$form->appendChild($doc->createElement("br"));	
+	$question_div->appendChild($textArea);
+	$question_div->appendChild($doc->createElement("br"));	
 
 	// Hint
 	$label = $doc->createElement("label", "Hint");
-	$form->appendChild($label);
-	$form->appendChild($doc->createElement("br"));	
+	$question_div->appendChild($label);
+	$question_div->appendChild($doc->createElement("br"));	
 	$textArea = $doc->createElement("textArea", $question["hint"]);
 	$textArea->setAttribute("name", "questions[" . $questionCounter . "][hint]");
-	$form->appendChild($textArea);
-	$form->appendChild($doc->createElement("br"));
+	$question_div->appendChild($textArea);
+	$question_div->appendChild($doc->createElement("br"));
 
 	// Bodovi
 	$label = $doc->createElement("label", "Bodovi");
-	$form->appendChild($label);
-	$form->appendChild($doc->createElement("br"));	
+	$question_div->appendChild($label);
+	$question_div->appendChild($doc->createElement("br"));	
 	$input = $doc->createElement("input");
 	$input->setAttribute("value", $question["brojBodova"]);
 	$input->setAttribute("name", "questions[" . $questionCounter . "][points]");
 	$input->setAttribute("type", "number");
-	$form->appendChild($input);
-	$form->appendChild($doc->createElement("br"));
+	$question_div->appendChild($input);
+	$question_div->appendChild($doc->createElement("br"));
 
 	$cat = $doc->createElement("select");
 	$cat->setAttribute("name", "questions[" . $questionCounter . "][category]");
-	$form->appendChild($cat);
+	$question_div->appendChild($cat);
 
 	foreach ($categories as $category) {
 		$option = $doc->createElement("option", $category["naziv"]);
@@ -142,11 +167,29 @@ foreach ($result as $question) {
 
 		$cat->appendChild($option);
 	}
+	
+	$question_div->appendChild($doc->createElement("br"));
+	$question_div->appendChild($doc->createElement("br"));
+	
+	$button = $doc->createElement("button", "Dodaj odgovor");
+	$button->setAttribute("onClick", "add_answer(this)");
+	$button->setAttribute("type", "button");
+	$button->setAttribute("id", "add_answer_button" . $questionCounter);
+	$question_div->appendChild($button);
+
+	$button = $doc->createElement("button", "Makni odgovor");
+	$button->setAttribute("onClick", "remove_answer(this)");
+	$button->setAttribute("type", "button");
+	$button->setAttribute("id", "remove_answer_button_" . $questionCounter);
+	$question_div->appendChild($button);
+	
+	$question_div->appendChild($doc->createElement("br"));
+	$question_div->appendChild($doc->createElement("br"));
 
 	$answerCounter = 0;
 	$answersDiv = $doc->createElement("div");
 	$answersDiv->setAttribute("class", "answersDiv");
-	$form->appendChild($answersDiv);
+	$question_div->appendChild($answersDiv);
 
 	$query = "SELECT ID,tekst,opisNetocnog,tocno FROM tg_odgovori WHERE pitanjeID = ?";
 	$params = array($question["questionID"]);
@@ -201,7 +244,8 @@ foreach ($result as $question) {
 	}
 
 	$questionCounter++;	
-	$form->appendChild($doc->createElement("br"));	
+	$question_div->appendChild($doc->createElement("br"));	
+	$form->appendChild($question_div);
 }
 
 $appended = $doc->createElement("input");
@@ -211,7 +255,7 @@ $form->appendChild($appended);
 $appended = $doc->createElement("br");
 $body->appendChild($appended);
 
-echo "<script src=\"test_edit_script.js\"></script>";
 echo "<a href=\"/index.php\">Nazad</a><br><br>";
 echo $doc->saveHTML();
+echo "<script src=\"public/test_edit_script.js\"></script>";
 ?>
