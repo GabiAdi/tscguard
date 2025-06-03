@@ -2,8 +2,6 @@ let questionNumber = 0;
 let answerNumber = [];
 
 function add_question() {
-	console.log("test");
-
 	let btn = document.getElementById("add_question_btn");
 	let form = document.getElementById("test_form");
 	
@@ -27,18 +25,26 @@ function add_question() {
 	answersDiv.id = "answers_" + questionNumber;
 	answersDiv.classList.add("answersDiv");
 
-	let newBtn = document.createElement("button");
-	newBtn.id = "answer_btn_" + questionNumber;
-	newBtn.onclick = function() {
+	let addBtn = document.createElement("button");
+	addBtn.id = "answer_btn_" + questionNumber;
+	addBtn.onclick = function() {
 		add_answer(this);	
 	};
-	newBtn.textContent = "Dodaj Odgovor";
-	newBtn.type = "button";
+	addBtn.textContent = "Dodaj Odgovor";
+	addBtn.type = "button";
+
+	let removeBtn = document.createElement("button");
+	removeBtn.id = "remove_btn_" + questionNumber;
+	removeBtn.onclick = function() {
+		remove_answer(this);	
+	};
+	removeBtn.textContent = "Makni Odgovor";
+	removeBtn.type = "button";
 
 	let labelHint = document.createElement("label");
 	labelHint.for = "hint_text_"+questionNumber;
 	labelHint.textContent = "Hint";
-	
+
 	let hint = document.createElement("textarea");
 	hint.name = "questions["+ questionNumber +"][hint]";
 	hint.type = "text";
@@ -85,7 +91,9 @@ function add_question() {
 	div.append(document.createElement("br"));
 	div.append(category);	
 	div.append(document.createElement("br"));
-	div.append(newBtn);
+	div.append(addBtn);
+	div.append(document.createElement("br"));
+	div.append(removeBtn);
 	div.append(document.createElement("br"));
 	div.append(document.createElement("br"));
 	div.append(answersDiv);
@@ -141,4 +149,33 @@ function add_answer(button) {
 	answerDiv.append(correct);
 	
 	answerNumber[id]++;
+}
+
+function remove_question() {
+	let form = document.getElementById("test_form");
+	let divs = form.querySelectorAll(":scope > div");
+	
+	if(divs.length < 1) {
+		return;
+	}
+
+	divs[divs.length - 1].remove();
+
+	questionNumber--;
+	answerNumber[questionNumber] = 0;
+}
+
+function remove_answer(button) {
+	let id = parseInt(button.id.split("_")[2]);
+	let answersDiv = document.getElementById("answers_" + id);
+
+	let divs = answersDiv.querySelectorAll(":scope > div");
+
+	if(divs.length < 1) {
+		return;
+	}
+
+	divs[divs.length - 1].remove();
+
+	answerNumber[id]--;
 }

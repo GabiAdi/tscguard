@@ -211,6 +211,7 @@ $form->appendChild($appended);
 $appended = $doc->createElement("br");
 $body->appendChild($appended);
 
+echo "<script src=\"test_edit_script.js\"></script>";
 echo "<a href=\"/index.php\">Nazad</a><br><br>";
 echo $doc->saveHTML();
 ?>

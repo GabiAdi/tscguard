@@ -36,6 +36,7 @@ $lastKey = array_key_last($result);
 		<a href="/index.php">Nazad</a>
 		<h1>Napravi test</h1>
 		<button id="add_question_btn" onClick="add_question()">Dodaj pitanje</button>
+		<button id="remove_question_btn" onClick="remove_question()">Makni pitanje</button>
 		<form id="test_form" action="api/add_test.php" method="post">
 			<label for="test_name">Ime testa</label>
 			<input name="test[name]" type="text" id="test_name" required><br>
